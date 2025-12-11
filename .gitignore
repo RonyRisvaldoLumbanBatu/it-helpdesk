@@ -8,7 +8,7 @@ composer.lock
 
 # Environment variables (Sensitive data)
 .env
-config/database.php
+# config/database.php
 
 # IDEs
 .idea/
