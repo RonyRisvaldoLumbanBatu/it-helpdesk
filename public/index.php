@@ -60,6 +60,31 @@ switch ($page) {
         }
         $currentUser = $_SESSION['user'];
         $content = $_GET['action'] ?? 'home';
+        // --- FETCH TICKET DETAIL ---
+        if ($content === 'ticket_detail') {
+            $ticketId = $_GET['id'] ?? 0;
+            require_once __DIR__ . '/../src/Database.php';
+            try {
+                $pdo = Database::getInstance();
+                $stmt = $pdo->prepare("
+                    SELECT t.*, u.name as requester_name, u.email as requester_email 
+                    FROM tickets t 
+                    JOIN users u ON t.user_id = u.id 
+                    WHERE t.id = :id
+                ");
+                $stmt->execute(['id' => $ticketId]);
+                $ticket = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                // Access Control
+                if (!$ticket || ($currentUser['role'] !== 'admin' && $ticket['user_id'] != $currentUser['id'])) {
+                    $ticket = null; // Access denied / Not found
+                }
+            } catch (Exception $e) {
+                die("Error: " . $e->getMessage());
+            }
+        }
+        // ---------------------------
+
         require_once __DIR__ . '/../views/dashboard.php';
         break;
 

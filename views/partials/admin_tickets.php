@@ -71,7 +71,12 @@ try {
                                 style="font-size: 0.8rem; color: var(--text-muted);">@<?php echo htmlspecialchars($t['username']); ?></span>
                         </td>
                         <td style="padding: 12px 16px; font-size: 0.9rem;">
-                            <?php echo htmlspecialchars($t['subject']); ?>
+                            <strong>
+                                <a href="?page=dashboard&action=ticket_detail&id=<?php echo $t['id']; ?>"
+                                    style="text-decoration: none; color: var(--primary);">
+                                    <?php echo htmlspecialchars($t['subject']); ?>
+                                </a>
+                            </strong>
                             <div
                                 style="font-size: 0.8rem; color: var(--text-muted); max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                 <?php echo htmlspecialchars($t['description']); ?>

@@ -45,7 +45,12 @@ try {
                             <small><?php echo date('H:i', strtotime($t['created_at'])); ?></small>
                         </td>
                         <td style="padding: 12px 16px; font-size: 0.9rem;">
-                            <strong><?php echo htmlspecialchars($t['subject']); ?></strong>
+                            <strong>
+                                <a href="?page=dashboard&action=ticket_detail&id=<?php echo $t['id']; ?>"
+                                    style="text-decoration: none; color: inherit;">
+                                    <?php echo htmlspecialchars($t['subject']); ?>
+                                </a>
+                            </strong>
                             <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
                                 <?php echo htmlspecialchars($t['description']); ?>
                             </div>
