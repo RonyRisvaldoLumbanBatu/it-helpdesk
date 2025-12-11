@@ -110,6 +110,8 @@
                     require_once __DIR__ . '/partials/user_tickets.php';
                 } elseif ($content == 'incoming_tickets' && $currentUser['role'] === 'admin') {
                     require_once __DIR__ . '/partials/admin_tickets.php';
+                } elseif ($content == 'manage_users' && $currentUser['role'] === 'admin') {
+                    require_once __DIR__ . '/partials/manage_users.php';
                 } else {
                     echo "<h2>Halaman " . htmlspecialchars($content) . "</h2>";
                     echo "<p>Fitur ini belum diimplementasikan di versi demo.</p>";
