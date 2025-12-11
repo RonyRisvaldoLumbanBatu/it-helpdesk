@@ -52,7 +52,7 @@ Project ini dibangun dengan filosofi **"Simple yet Powerful"**:
 
 ### Langkah 1: Clone Repository
 ```bash
-git clone https://github.com/rony-it/it-helpdesk.git
+git clone https://github.com/RonyRisvaldoLumbanBatu/it-helpdesk.git
 cd it-helpdesk
 ```
 
@@ -60,6 +60,22 @@ cd it-helpdesk
 1.  Buat database baru di MySQL bernama `it_helpdesk`.
 2.  Import file `database/database.sql` ke database tersebut.
     *   File ini berisi struktur tabel dan **data dummy** awal.
+
+---
+
+## 📸 Screenshots
+
+*(Tambahkan screenshot aplikasi di sini)*
+
+| Login Page | Dashboard |
+| :---: | :---: |
+| ![Login](https://via.placeholder.com/400x200?text=Login+Page) | ![Dashboard](https://via.placeholder.com/400x200?text=Dashboard+Admin) |
+
+| Detail Tiket | Laporan |
+| :---: | :---: |
+| ![Ticket Detail](https://via.placeholder.com/400x200?text=Detail+Tiket) | ![Reports](https://via.placeholder.com/400x200?text=Laporan) |
+
+---
 
 ### Langkah 3: Konfigurasi Koneksi
 Duplikasi/Edit file `config/database.php` dan sesuaikan kredensial Anda:
