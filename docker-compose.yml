@@ -1,0 +1,30 @@
+services:
+  web:
+    build: .
+    container_name: it-helpdesk-web
+    restart: always
+    ports:
+      - "7000:80"
+    environment:
+      - DB_HOST=database
+      - DB_NAME=it_helpdesk
+      - DB_USER=helpdesk_user
+      - DB_PASS=pass123
+    depends_on:
+      - database
+
+  database:
+    image: mysql:8.0
+    container_name: it-helpdesk-db
+    restart: always
+    environment:
+      - MYSQL_DATABASE=it_helpdesk
+      - MYSQL_USER=helpdesk_user
+      - MYSQL_PASSWORD=pass123
+      - MYSQL_ROOT_PASSWORD=rootpass123
+    volumes:
+      - ./database/database.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

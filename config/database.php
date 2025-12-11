@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'host' => 'localhost',
-    'dbname' => 'it_helpdesk',
-    'password' => '', // Default XAMPP biasanya kosong
-    'username' => 'root',
+    'host' => getenv('DB_HOST') ?: 'localhost',
+    'dbname' => getenv('DB_NAME') ?: 'it_helpdesk',
+    'username' => getenv('DB_USER') ?: 'root',
+    'password' => getenv('DB_PASS') ?: '',
     'charset' => 'utf8mb4'
 ];
