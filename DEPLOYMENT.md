@@ -1,32 +1,28 @@
-# Panduan Deployment ke Ubuntu Server (192.168.10.77)
+# Panduan Deployment ke Server dengan Nginx Proxy Manager
 
-Panduan ini untuk menginstall IT Helpdesk di server Ubuntu baru dari nol.
+Karena server sudah ada Nginx Proxy Manager, kita tidak perlu menginstall Apache. Kita akan menjalankan aplikasi menggunakan PHP Built-in Server.
 
-## 1. Persiapan Server (Sekali Saja)
-Masuk ke server via SSH atau Terminal langsung:
+## 1. Hapus Apache (Jika terlanjur install)
+Agar tidak konflik port.
 ```bash
-ssh user@192.168.10.77
+sudo systemctl stop apache2
+sudo apt remove apache2 -y
+sudo apt autoremove -y
 ```
 
-Install Web Server, PHP, dan MySQL:
+## 2. Install PHP & Database
 ```bash
 sudo apt update
-sudo apt install apache2 php libapache2-mod-php php-mysql php-curl mysql-server git unzip -y
+sudo apt install php php-mysql php-cli mysql-server git unzip -y
 ```
 
-Pastikan Apache berjalan:
-```bash
-sudo systemctl enable apache2
-sudo systemctl start apache2
-```
-
-## 2. Setup Database
-Masuk ke MySQL console:
+## 3. Setup Database (Sekali Saja)
+Masuk ke MySQL:
 ```bash
 sudo mysql
 ```
 
-Copy-paste perintah SQL berikut (Ganti 'password_rahasia' dengan password database yang diinginkan):
+Copy-paste:
 ```sql
 CREATE DATABASE it_helpdesk;
 CREATE USER 'helpdesk_admin'@'localhost' IDENTIFIED BY 'password_rahasia';
@@ -35,90 +31,77 @@ FLUSH PRIVILEGES;
 EXIT;
 ```
 
-## 3. Clone Aplikasi
-Kita akan taruh aplikasi di folder web server `/var/www/html/it-helpdesk`.
-
+## 4. Install Aplikasi
 ```bash
-cd /var/www/html
+cd /var/www
+sudo mkdir html
+cd html
 sudo git clone https://github.com/RonyRisvaldoLumbanBatu/it-helpdesk.git
-sudo chown -R www-data:www-data it-helpdesk
-sudo chmod -R 755 it-helpdesk
-```
-
-## 4. Konfigurasi Aplikasi
-Masuk ke folder app dan buat file database config production:
-```bash
 cd it-helpdesk
+
+# Config Database
 cp config/database.php.example config/database.php
 nano config/database.php
-```
-*Edit file tersebut, masukkan 'helpdesk_admin' dan 'password_rahasia' yang dibuat di langkah 2.*
+# (Isi user 'helpdesk_admin' dan password tadi)
 
-Import Struktur Tabel:
-```bash
+# Import DB
 mysql -u helpdesk_admin -p it_helpdesk < database/database.sql
-```
-*(Masukkan password saat diminta)*
 
-Jalankan Script Migrasi (Untuk Login Google):
-```bash
+# Migrasi Google Login
 php public/migrate_google.php
 ```
 
-## 5. Konfigurasi Apache (Custom Port 7000)
-Karena server ini untuk testing dan mungkin port 80 sudah dipakai, kita akan pakai PORT 7000.
+## 5. Jalankan Aplikasi di Port 7000
+Kita akan menjalankan PHP server di background.
 
-1. Edit ports configuration apache:
+**Cara Simpel (Command Line):**
 ```bash
-sudo nano /etc/apache2/ports.conf
+nohup php -S 0.0.0.0:7000 -t public > /dev/null 2>&1 &
 ```
-Tambahkan baris ini di bawah `Listen 80`:
-```apache
-Listen 7000
-```
-*(Simpan dan keluar: Ctrl+X, Y, Enter)*
+*(Aplikasi sekarang hidup di port 7000 selamanya, meski terminal ditutup)*
 
-2. Buat Virtual Host Baru:
+**Cara Profesional (Systemd Service) - Disarankan:**
+Agar kalau server restart, aplikasi nyala sendiri.
+
+1. Buat file service:
 ```bash
-sudo nano /etc/apache2/sites-available/it-helpdesk.conf
+sudo nano /etc/systemd/system/helpdesk.service
 ```
 
-Isi dengan script ini (Perhatikan `<VirtualHost *:7000>`):
-```apache
-<VirtualHost *:7000>
-    ServerAdmin admin@192.168.10.77
-    DocumentRoot /var/www/html/it-helpdesk/public
-    
-    <Directory /var/www/html/it-helpdesk/public>
-        Options Indexes FollowSymLinks
-        AllowOverride All
-        Require all granted
-    </Directory>
+2. Isi file tersebut:
+```ini
+[Unit]
+Description=IT Helpdesk PHP Server
+After=network.target
 
-    ErrorLog ${APACHE_LOG_DIR}/helpdesk_error.log
-    CustomLog ${APACHE_LOG_DIR}/helpdesk_access.log combined
-</VirtualHost>
+[Service]
+User=root
+WorkingDirectory=/var/www/html/it-helpdesk
+ExecStart=/usr/bin/php -S 0.0.0.0:7000 -t public
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
 ```
 
-3. Aktifkan config baru & Restart Apache:
+3. Aktifkan Service:
 ```bash
-sudo a2ensite it-helpdesk.conf
-sudo a2enmod rewrite
-sudo systemctl restart apache2
+sudo systemctl daemon-reload
+sudo systemctl enable helpdesk
+sudo systemctl start helpdesk
 ```
 
-4. **PENTING: Firewall**
-Jangan lupa buka port 7000 di firewall Ubuntu (UFW) agar bisa diakses dari laptop lain:
+Cek status:
 ```bash
-sudo ufw allow 7000/tcp
+sudo systemctl status helpdesk
 ```
 
+## 6. Setting Nginx Proxy Manager (Di Browser)
+1. Buka Admin Nginx Proxy Manager kamu.
+2. Add **Proxy Host**.
+3. **Domain Names**: Isi domain atau IP (misal `helpdesk.local` atau `192.168.10.77`).
+4. **Forward Host**: `127.0.0.1` (karena PHP jalan di server yg sama).
+5. **Forward Port**: `7000`.
+6. Save.
 
-## 6. Update Aplikasi (Jika ada perubahan baru dari Laptop)
-Jika kamu sudah push kode baru dari laptop ke GitHub, jalankan ini di server untuk update:
-
-```bash
-cd /var/www/html/it-helpdesk
-sudo git pull origin main
-```
-Selesai! Akses aplikasi di `http://192.168.10.77/`
+Selesai! Web helpdesk aman berjalan tanpa mengganggu web lain.
