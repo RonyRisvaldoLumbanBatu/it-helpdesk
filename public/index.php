@@ -6,24 +6,29 @@ $page = $_GET['page'] ?? 'login';
 
 // --- AUTHENTICATION LOGIC ---
 if ($page === 'auth_check' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_once __DIR__ . '/../src/Database.php';
+
     $username = $_POST['username'] ?? '';
-    $password = $_POST['password'] ?? '';
+    // $passwordInput = $_POST['password'] ?? ''; 
 
-    // Hardcoded Users untuk sementara
-    // Format: username => [password, role, display_name]
-    $users = [
-        'admin' => ['password' => 'admin123', 'role' => 'admin', 'name' => 'Administrator'],
-        'user' => ['password' => 'user123', 'role' => 'user', 'name' => 'User Staff']
-    ];
+    try {
+        $pdo = Database::getInstance();
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username LIMIT 1");
+        $stmt->execute(['username' => $username]);
+        $user = $stmt->fetch();
 
-    if (isset($users[$username]) && $users[$username]['password'] === $password) {
-        $_SESSION['user'] = $users[$username];
-        header('Location: ?page=dashboard');
-        exit;
-    } else {
-        // Login gagal
-        header('Location: ?page=login&error=1');
-        exit;
+        // Verifikasi password database
+        if ($user && password_verify($_POST['password'], $user['password'])) {
+            unset($user['password']); // Hapus hash dari session
+            $_SESSION['user'] = $user;
+            header('Location: ?page=dashboard');
+            exit;
+        } else {
+            header('Location: ?page=login&error=1');
+            exit;
+        }
+    } catch (Exception $e) {
+        die("Error DB: " . $e->getMessage());
     }
 }
 
@@ -41,7 +46,6 @@ function view($viewName)
 
 switch ($page) {
     case 'login':
-        // Jika sudah login, lempar ke dashboard
         if (isset($_SESSION['user'])) {
             header('Location: ?page=dashboard');
             exit;
@@ -50,23 +54,26 @@ switch ($page) {
         break;
 
     case 'dashboard':
-        // Cek apakah sudah login
         if (!isset($_SESSION['user'])) {
             header('Location: ?page=login');
             exit;
         }
-
         $currentUser = $_SESSION['user'];
-
-        $content = 'home';
-        if (isset($_GET['action'])) {
-            $content = $_GET['action'];
-        }
-
+        $content = $_GET['action'] ?? 'home';
         require_once __DIR__ . '/../views/dashboard.php';
         break;
+
+    case 'submit_ticket':
+        require_once __DIR__ . '/../views/actions/submit_ticket.php';
+        break;
+
+    case 'update_ticket':
+        require_once __DIR__ . '/../views/actions/update_ticket.php';
+        break;
+
 
     default:
         view('login');
         break;
 }
+

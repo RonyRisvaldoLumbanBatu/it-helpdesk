@@ -76,14 +76,24 @@
                     echo '<h2>Dashboard ' . ucfirst($currentUser['role']) . '</h2>';
 
                     if ($currentUser['role'] === 'admin') {
+                        // LOAD REAL STATS
+                        require_once __DIR__ . '/../src/Database.php';
+                        $pdo = Database::getInstance();
+
+                        $stmtPending = $pdo->query("SELECT COUNT(*) FROM tickets WHERE status = 'pending'");
+                        $countPending = $stmtPending->fetchColumn();
+
+                        $stmtResolved = $pdo->query("SELECT COUNT(*) FROM tickets WHERE status = 'resolved'");
+                        $countResolved = $stmtResolved->fetchColumn();
+
                         echo '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px;">
                                 <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                                    <h3 style="color: #4f46e5; font-size: 2rem;">12</h3>
+                                    <h3 style="color: #f59e0b; font-size: 2rem;">' . NumberFormat($countPending) . '</h3>
                                     <p style="color: #64748b;">Tiket Pending</p>
                                 </div>
                                 <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                                    <h3 style="color: #10b981; font-size: 2rem;">5</h3>
-                                    <p style="color: #64748b;">Tiket Selesai Hari Ini</p>
+                                    <h3 style="color: #10b981; font-size: 2rem;">' . NumberFormat($countResolved) . '</h3>
+                                    <p style="color: #64748b;">Tiket Selesai</p>
                                 </div>
                               </div>';
                     } else {
@@ -94,9 +104,16 @@
                     }
                 } elseif ($content == 'change_password') {
                     require_once __DIR__ . '/partials/form_change_password.php';
+                } elseif ($content == 'incoming_tickets' && $currentUser['role'] === 'admin') {
+                    require_once __DIR__ . '/partials/admin_tickets.php';
                 } else {
                     echo "<h2>Halaman " . htmlspecialchars($content) . "</h2>";
                     echo "<p>Fitur ini belum diimplementasikan di versi demo.</p>";
+                }
+
+                function NumberFormat($num)
+                {
+                    return number_format($num);
                 }
                 ?>
             </div>

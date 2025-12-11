@@ -43,10 +43,11 @@
             <?php endif; ?>
 
             <div class="demo-info">
-                <strong>Demo Accounts:</strong><br>
-                Admin: admin / admin123<br>
-                User: user / user123
+                <strong>Default Accounts (Database):</strong><br>
+                Admin: admin / password123<br>
+                User: user / password123
             </div>
+
 
             <form action="?page=auth_check" method="POST">
                 <div class="form-group mb-4">
