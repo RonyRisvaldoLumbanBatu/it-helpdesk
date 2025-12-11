@@ -69,11 +69,11 @@ cd it-helpdesk
 
 | Login Page | Dashboard |
 | :---: | :---: |
-| ![Login](https://via.placeholder.com/400x200?text=Login+Page) | ![Dashboard](https://via.placeholder.com/400x200?text=Dashboard+Admin) |
+| ![Login](docs/images/login.png) | ![Dashboard](docs/images/dashboard.png) |
 
 | Detail Tiket | Laporan |
 | :---: | :---: |
-| ![Ticket Detail](https://via.placeholder.com/400x200?text=Detail+Tiket) | ![Reports](https://via.placeholder.com/400x200?text=Laporan) |
+| ![Ticket Detail](docs/images/ticket_detail.png) | ![Reports](docs/images/reports.png) |
 
 ---
 
