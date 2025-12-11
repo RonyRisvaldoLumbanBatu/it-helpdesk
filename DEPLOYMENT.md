@@ -65,16 +65,27 @@ Jalankan Script Migrasi (Untuk Login Google):
 php public/migrate_google.php
 ```
 
-## 5. Konfigurasi Apache (Virtual Host)
-Agar URL-nya cantik (tanpa `public/index.php`).
+## 5. Konfigurasi Apache (Custom Port 7000)
+Karena server ini untuk testing dan mungkin port 80 sudah dipakai, kita akan pakai PORT 7000.
 
+1. Edit ports configuration apache:
+```bash
+sudo nano /etc/apache2/ports.conf
+```
+Tambahkan baris ini di bawah `Listen 80`:
+```apache
+Listen 7000
+```
+*(Simpan dan keluar: Ctrl+X, Y, Enter)*
+
+2. Buat Virtual Host Baru:
 ```bash
 sudo nano /etc/apache2/sites-available/it-helpdesk.conf
 ```
 
-Isi dengan script ini:
+Isi dengan script ini (Perhatikan `<VirtualHost *:7000>`):
 ```apache
-<VirtualHost *:80>
+<VirtualHost *:7000>
     ServerAdmin admin@192.168.10.77
     DocumentRoot /var/www/html/it-helpdesk/public
     
@@ -84,17 +95,24 @@ Isi dengan script ini:
         Require all granted
     </Directory>
 
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
+    ErrorLog ${APACHE_LOG_DIR}/helpdesk_error.log
+    CustomLog ${APACHE_LOG_DIR}/helpdesk_access.log combined
 </VirtualHost>
 ```
 
-Aktifkan config baru:
+3. Aktifkan config baru & Restart Apache:
 ```bash
 sudo a2ensite it-helpdesk.conf
 sudo a2enmod rewrite
 sudo systemctl restart apache2
 ```
+
+4. **PENTING: Firewall**
+Jangan lupa buka port 7000 di firewall Ubuntu (UFW) agar bisa diakses dari laptop lain:
+```bash
+sudo ufw allow 7000/tcp
+```
+
 
 ## 6. Update Aplikasi (Jika ada perubahan baru dari Laptop)
 Jika kamu sudah push kode baru dari laptop ke GitHub, jalankan ini di server untuk update:
