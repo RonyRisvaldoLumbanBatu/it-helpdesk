@@ -1,5 +1,5 @@
 @echo off
 echo Starting IT Helpdesk Server...
-echo Akses web di: http://localhost:8080/?page=change_password
+echo Akses web di: http://localhost:8080/
 echo Tekan Ctrl+C untuk berhenti.
-C:\xampp\php\php.exe -S localhost:8080 -t public
+php -S localhost:8080 -t public
