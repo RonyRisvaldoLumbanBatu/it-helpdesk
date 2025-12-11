@@ -33,10 +33,12 @@
                         class="nav-item <?php echo (isset($_GET['action']) && $_GET['action'] == 'change_password') ? 'active' : ''; ?>">
                         <i class="ri-lock-password-line" style="margin-right: 10px;"></i> Ganti Password Email
                     </a>
-                    <a href="#" class="nav-item">
+                    <a href="?page=dashboard&action=my_tickets"
+                        class="nav-item <?php echo (isset($_GET['action']) && $_GET['action'] == 'my_tickets') ? 'active' : ''; ?>">
                         <i class="ri-ticket-line" style="margin-right: 10px;"></i> Tiket Saya
                     </a>
                 <?php endif; ?>
+
 
                 <!-- MENU KHUSUS ADMIN -->
                 <?php if ($currentUser['role'] === 'admin'): ?>
@@ -104,6 +106,8 @@
                     }
                 } elseif ($content == 'change_password') {
                     require_once __DIR__ . '/partials/form_change_password.php';
+                } elseif ($content == 'my_tickets') {
+                    require_once __DIR__ . '/partials/user_tickets.php';
                 } elseif ($content == 'incoming_tickets' && $currentUser['role'] === 'admin') {
                     require_once __DIR__ . '/partials/admin_tickets.php';
                 } else {
