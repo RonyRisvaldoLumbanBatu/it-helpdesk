@@ -11,7 +11,7 @@ services:
       - DB_USER=helpdesk_user
       - DB_PASS=pass123
     volumes:
-      - ./:/var/www/html
+      - /srv/it-helpdesk:/var/www/html
     depends_on:
       - database
 
