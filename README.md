@@ -65,7 +65,6 @@ cd it-helpdesk
 
 ## 📸 Screenshots
 
-*(Tambahkan screenshot aplikasi di sini)*
 
 | Login Page | Dashboard |
 | :---: | :---: |
