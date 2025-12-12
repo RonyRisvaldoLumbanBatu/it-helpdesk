@@ -65,15 +65,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['credential'])) {
                 // Default Password Random (karena login via Google)
                 $randomPass = password_hash(bin2hex(random_bytes(8)), PASSWORD_DEFAULT);
 
+                // Tentukan Role berdasarkan Domain
+                $newRole = 'user'; // Default
+                if (str_ends_with($email, '@satyaterrabhinneka.ac.id')) {
+                    $newRole = 'staff';
+                } elseif (str_ends_with($email, '@students.satyaterrabhinneka.ac.id')) {
+                    $newRole = 'mahasiswa';
+                }
+
                 $sqlInsert = "INSERT INTO users (name, username, email, password, google_id, role) 
-                              VALUES (:nm, :usr, :eml, :pass, :gid, 'user')";
+                              VALUES (:nm, :usr, :eml, :pass, :gid, :role)";
                 $stmtIns = $pdo->prepare($sqlInsert);
                 $stmtIns->execute([
                     'nm' => $name,
                     'usr' => $username,
                     'eml' => $email,
                     'pass' => $randomPass,
-                    'gid' => $googleId
+                    'gid' => $googleId,
+                    'role' => $newRole
                 ]);
 
                 // Ambil data user yg baru dibuat

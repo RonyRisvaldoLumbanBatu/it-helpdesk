@@ -53,19 +53,34 @@ try {
                         <?php echo htmlspecialchars($u['username']); ?>
                     </td>
                     <td style="padding: 12px 16px;">
+                        <?php
+                        $roleColors = [
+                            'admin' => ['bg' => '#e0e7ff', 'text' => '#4f46e5'],
+                            'staff' => ['bg' => '#f0fdf4', 'text' => '#166534'], // Green
+                            'mahasiswa' => ['bg' => '#fff7ed', 'text' => '#c2410c'], // Orange
+                            'user' => ['bg' => '#f1f5f9', 'text' => '#64748b'] // Grey (Default)
+                        ];
+                        $rc = $roleColors[$u['role']] ?? $roleColors['user'];
+                        ?>
                         <span
-                            style="background: <?php echo $u['role'] == 'admin' ? '#e0e7ff' : '#f1f5f9'; ?>; color: <?php echo $u['role'] == 'admin' ? '#4f46e5' : '#64748b'; ?>; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase;">
-                            <?php echo $u['role']; ?>
+                            style="background: <?php echo $rc['bg']; ?>; color: <?php echo $rc['text']; ?>; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase;">
+                            <?php echo htmlspecialchars($u['role'] ?: '-'); ?>
                         </span>
                     </td>
                     <td style="padding: 12px 16px; font-size: 0.9rem; color: var(--text-muted);">
                         <?php echo date('d M Y', strtotime($u['created_at'])); ?>
                     </td>
                     <td style="padding: 12px 16px; text-align: right;">
-                        <button style="color: #ef4444; background: none; border: none; cursor: pointer;"
+                        <button
+                            onclick="openEditModal('<?php echo $u['id']; ?>', '<?php echo htmlspecialchars($u['name'], ENT_QUOTES); ?>', '<?php echo htmlspecialchars($u['username'], ENT_QUOTES); ?>', '<?php echo htmlspecialchars($u['email'] ?? '', ENT_QUOTES); ?>', '<?php echo $u['role']; ?>')"
+                            style="color: var(--primary); background: none; border: none; cursor: pointer; margin-right: 10px;"
+                            title="Edit User">
+                            <i class="ri-edit-line"></i>
+                        </button>
+                        <!-- <button style="color: #ef4444; background: none; border: none; cursor: pointer;"
                             title="Hapus (Belum Aktif)">
                             <i class="ri-delete-bin-line"></i>
-                        </button>
+                        </button> -->
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -94,8 +109,10 @@ try {
             <div class="form-group mb-4">
                 <label>Role</label>
                 <select name="role" class="form-control">
-                    <option value="user">User Staff</option>
+                    <option value="mahasiswa">Mahasiswa</option>
+                    <option value="staff">Staff</option>
                     <option value="admin">Administrator</option>
+                    <option value="user">User Biasa</option>
                 </select>
             </div>
 
@@ -112,3 +129,61 @@ try {
         </form>
     </div>
 </div>
+
+<!-- Modal Edit User -->
+<div id="editUserModal"
+    style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000;">
+    <div
+        style="background: white; padding: 30px; border-radius: 12px; width: 100%; max-width: 400px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);">
+        <h3 style="margin-bottom: 20px; color: var(--primary);">Edit User</h3>
+
+        <form action="?page=update_user" method="POST">
+            <input type="hidden" name="user_id" id="edit_user_id">
+
+            <div class="form-group mb-4">
+                <label>Nama Lengkap</label>
+                <input type="text" name="name" id="edit_name" class="form-control" required>
+            </div>
+
+            <div class="form-group mb-4">
+                <label>Username</label>
+                <input type="text" name="username" id="edit_username" class="form-control" required>
+            </div>
+
+            <div class="form-group mb-4">
+                <label>Role</label>
+                <select name="role" id="edit_role" class="form-control">
+                    <option value="mahasiswa">Mahasiswa</option>
+                    <option value="staff">Staff</option>
+                    <option value="admin">Administrator</option>
+                    <option value="user">User Biasa</option>
+                </select>
+            </div>
+
+            <div class="form-group mb-4"
+                style="background: #fff7ed; padding: 10px; border-radius: 6px; border: 1px solid #ffedd5;">
+                <label style="color: #9a3412;">Reset Password (Opsional)</label>
+                <input type="password" name="password" class="form-control"
+                    placeholder="Isi HANYA jika ingin ganti password">
+                <small style="color: #9a3412; font-size: 0.75rem;">Biarkan kosong jika tidak ingin mengubah
+                    password.</small>
+            </div>
+
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button type="button" onclick="document.getElementById('editUserModal').style.display='none'"
+                    class="btn" style="background: #f1f5f9; color: var(--text-muted);">Batal</button>
+                <button type="submit" class="btn btn-primary">Update Data</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openEditModal(id, name, username, email, role) {
+        document.getElementById('editUserModal').style.display = 'flex';
+        document.getElementById('edit_user_id').value = id;
+        document.getElementById('edit_name').value = name;
+        document.getElementById('edit_username').value = username;
+        document.getElementById('edit_role').value = role;
+    }
+</script>

@@ -100,6 +100,10 @@ switch ($page) {
         require_once __DIR__ . '/../views/actions/create_user.php';
         break;
 
+    case 'update_user':
+        require_once __DIR__ . '/../views/actions/update_user.php';
+        break;
+
     case 'auth_google':
         require_once __DIR__ . '/../views/actions/auth_google.php';
         break;
