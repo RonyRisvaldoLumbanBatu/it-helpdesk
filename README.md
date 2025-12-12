@@ -11,44 +11,34 @@ Aplikasi **IT Helpdesk** modern berbasis web untuk mengelola tiket dukungan tekn
 ## ✨ Fitur Utama
 
 ### 🔐 Otentikasi & Keamanan
-*   **Login Aman**: Menggunakan hashing password `Bcrypt` standar industri.
-*   **Role-Based Access Control (RBAC)**: Pemisahan akses total antara **Admin** dan **User**.
-*   **Google Login Integration**: (Coming Soon) Mendukung login SSO Universitas.
-*   **Session Management**: Proteksi halaman ketat berbasis sesi PHP.
+*   **Login Aman**: Hashing password `Bcrypt`.
+*   **Google OAuth 2.0**: Login SSO menggunakan email kampus (@satyaterrabhinneka.ac.id).
+*   **Role-Based Access Control (RBAC)**:
+    *   **Admin**: Hak akses penuh (Kelola Tiket, User, Laporan).
+    *   **Staff**: User internal kampus.
+    *   **Mahasiswa**: User Mahasiswa.
+    *   **User**: User umum.
+*   **Session Management**: Proteksi CSRF & Session Hijacking.
 
 ### 👤 Portal User (Mahasiswa/Staff)
 *   **Dashboard Personal**: Ringkasan aktivitas tiket.
-*   **Buat Tiket Baru**: Form pengajuan masalah yang mudah dengan kategori.
-*   **History Tiket**: Melacak status pengajuan (Pending, Diproses, Selesai).
-*   **Detail Tiket**: Melihat respon status dari tim IT.
+*   **Buat Tiket Baru**: Form pengajuan masalah yang mudah.
+*   **Diskusi Tiket**: Chat interaktif dengan Admin di dalam detail tiket.
+*   **History Tiket**: Melacak status (Pending, In Progress, Resolved).
 
-### 🛠️ Portal Admin (Tim IT)
-*   **Dashboard Monitoring**: Statistik realtime jumlah tiket pending vs selesai.
-*   **Manajemen Tiket Masuk**:
-    *   Melihat semua tiket masuk.
-    *   Filter berdasarkan status (Pending, Resolved, dll).
-    *   **Update Status**: Mengubah status tiket (Pending -> In Progress -> Resolved/Rejected).
-*   **Manajemen User**: Tambah user baru dan reset password user.
+### 🛠️ Portal Admin
+*   **Dashboard Statistik**: Grafik Tren Tiket & Distribusi Status (Chart.js).
+*   **Manajemen Tiket**: Filter, Balas Komentar, Update Status.
+*   **Manajemen User**: Tambah, Edit, Reset Password User.
 
 ---
 
-## 🚀 Teknologi
-
-Project ini dibangun dengan filosofi **"Simple yet Powerful"**:
-
-*   **Backend**: PHP 8.x (Native, No Framework bloat).
-*   **Database**: MySQL / MariaDB.
-*   **Frontend**: HTML5, CSS3 (Modern Variables), RemixIcon.
-*   **Infrastructure**: Docker & Docker Compose Support.
-
----
-
-## 💻 Cara Install & Menjalankan (Local Development)
+## 💻 Cara Install & Menjalankan
 
 ### Prasyarat
 *   PHP >= 8.0
-*   MySQL Server (bisa via XAMPP/Laragon)
-*   Git
+*   MySQL Server (XAMPP/Laragon)
+*   Composer (Opsional)
 
 ### Langkah 1: Clone Repository
 ```bash
@@ -57,93 +47,60 @@ cd it-helpdesk
 ```
 
 ### Langkah 2: Setup Database
-1.  Buat database baru di MySQL bernama `it_helpdesk`.
+1.  Buat database manual bernama `it_helpdesk`.
 2.  Import file `database/database.sql` ke database tersebut.
-    *   File ini berisi struktur tabel dan **data dummy** awal.
+3.  **PENTING**: Jalankan migrasi tambahan untuk fitur terbaru (Role & Komentar):
+    ```bash
+    php database/migrations/migrate_roles.php
+    php database/migrations/migrate_comments.php
+    ```
+
+### Langkah 3: Konfigurasi
+Copy/Edit file `config/database.php` sesuai setting lokal Anda:
+```php
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'it_helpdesk');
+define('DB_USER', 'root');
+define('DB_PASS', '');
+```
+
+**Setup Google Login (Opsional):**
+1.  Buka `views/login.php` dan `views/actions/auth_google.php`.
+2.  Ganti `CLIENT_ID` dengan ID dari Google Cloud Console Anda.
+3.  Pastikan `Authorized Origins` di Google Console mencakup `http://localhost:8000`.
+
+### Langkah 4: Jalankan Aplikasi
+**Windows (Disarankan):**
+Double klik file **`dev.bat`**.
+
+**Manual:**
+```bash
+php -S localhost:8000 -t public
+```
+Akses di browser: **http://localhost:8000**
 
 ---
 
 ## 📸 Screenshots
 
-
-| Login Page | Dashboard |
+| Login Page | Dashboard Admin |
 | :---: | :---: |
 | ![Login](docs/images/login.png) | ![Dashboard](docs/images/dashboard.png) |
 
-| Detail Tiket | Laporan |
+| Detail Tiket & Chat | Laporan Grafik |
 | :---: | :---: |
 | ![Ticket Detail](docs/images/ticket_detail.png) | ![Reports](docs/images/reports.png) |
 
 ---
 
-### Langkah 3: Konfigurasi Koneksi
-Duplikasi/Edit file `config/database.php` dan sesuaikan kredensial Anda:
-```php
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'it_helpdesk');
-define('DB_USER', 'root'); // Sesuaikan user DB lokal
-define('DB_PASS', '');     // Sesuaikan password DB lokal
-```
-
-### Langkah 4: Jalankan Aplikasi
-Jika menggunakan PHP Built-in Server (Cara paling mudah):
-**Windows:**
-Double klik file `dev.bat`
-*atau jalankan di terminal:*
-```powershell
-.\dev.bat
-```
-
-**Linux/Mac:**
-```bash
-php -S localhost:8000 -t public
-```
-
-Buka browser di: **http://localhost:8000**
-
----
-
-## 🐳 Cara Menjalankan dengan Docker
-
-Jika Anda malas install PHP/MySQL manual, gunakan Docker:
-
-```bash
-docker compose up -d --build
-```
-Aplikasi akan berjalan di port `7000`: **http://localhost:7000**
-
----
-
 ## 🔑 Akun Demo (Default)
-
-Gunakan akun berikut untuk pengujian:
 
 | Role | Username | Password |
 | :--- | :--- | :--- |
 | **Administrator** | `admin` | `password123` |
 | **User Biasa** | `user` | `password123` |
 
-> ⚠️ **PENTING:** Segera ganti password default ini jika digunakan di production!
-
----
-
-## 📂 Struktur Project
-
-```
-it-helpdesk/
-├── config/             # Konfigurasi Database & App
-├── public/             # Folder yang terekspos ke publik (Web Root)
-│   ├── assets/         # CSS, Images, JS
-│   └── index.php       # Entry Point (Router Utama)
-├── src/                # Class Logic PHP (Database Connection)
-├── views/              # Tampilan HTML (Pages & Partials)
-│   ├── actions/        # Script pemroses Form (POST request)
-│   ├── partials/       # Potongan kode UI reusable
-│   └── dashboard.php   # Layout utama Dashboard
-├── database/           # File SQL untuk inisialisasi
-├── docker-compose.yml  # Orkestrasi Docker
-└── README.md           # Dokumentasi ini
-```
+> ⚠️ **Catatan SSO:** Login Google hanya bekerja untuk email `@satyaterrabhinneka.ac.id`. Role akan otomatis diset ke **Staff** atau **Mahasiswa** berdasarkan domain email.
 
 ---
 
