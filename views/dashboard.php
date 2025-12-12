@@ -27,8 +27,8 @@
                     <i class="ri-dashboard-line" style="margin-right: 10px;"></i> Overview
                 </a>
 
-                <!-- MENU KHUSUS USER -->
-                <?php if ($currentUser['role'] === 'user'): ?>
+                <!-- MENU KHUSUS USER (Staff, Mahasiswa, User Biasa) -->
+                <?php if ($currentUser['role'] !== 'admin'): ?>
                     <a href="?page=dashboard&action=change_password"
                         class="nav-item <?php echo (isset($_GET['action']) && $_GET['action'] == 'change_password') ? 'active' : ''; ?>">
                         <i class="ri-lock-password-line" style="margin-right: 10px;"></i> Ganti Password Email

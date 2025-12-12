@@ -78,6 +78,18 @@ switch ($page) {
                 // Access Control
                 if (!$ticket || ($currentUser['role'] !== 'admin' && $ticket['user_id'] != $currentUser['id'])) {
                     $ticket = null; // Access denied / Not found
+                    $comments = [];
+                } else {
+                    // Fetch Comments
+                    $stmtC = $pdo->prepare("
+                        SELECT c.*, u.name as user_name, u.role as user_role 
+                        FROM ticket_comments c 
+                        JOIN users u ON c.user_id = u.id 
+                        WHERE c.ticket_id = :tid 
+                        ORDER BY c.created_at ASC
+                    ");
+                    $stmtC->execute(['tid' => $ticketId]);
+                    $comments = $stmtC->fetchAll(PDO::FETCH_ASSOC);
                 }
             } catch (Exception $e) {
                 die("Error: " . $e->getMessage());
@@ -94,6 +106,12 @@ switch ($page) {
 
     case 'update_ticket':
         require_once __DIR__ . '/../views/actions/update_ticket.php';
+        break;
+
+
+
+    case 'add_comment':
+        require_once __DIR__ . '/../views/actions/add_comment.php';
         break;
 
     case 'create_user':
