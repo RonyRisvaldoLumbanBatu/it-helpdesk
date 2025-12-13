@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-    --primary: #4f46e5;
-    --primary-dark: #4338ca;
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
     --secondary: #64748b;
     --bg-body: #f1f5f9;
     --bg-card: #ffffff;
@@ -139,7 +139,7 @@ body {
 
 .nav-item:hover,
 .nav-item.active {
-    background: #eef2ff;
+    background: #eff6ff;
     color: var(--primary);
 }
 
@@ -190,5 +190,5 @@ body {
 
 .form-control:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }

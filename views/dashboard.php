@@ -14,12 +14,10 @@
     <div class="dashboard-layout">
         <!-- Sidebar -->
         <aside class="sidebar">
-            <div class="sidebar-header">
-                <i class="ri-customer-service-2-fill" style="margin-right: 10px;"></i> Helpdesk
+            <div class="sidebar-header" style="display: flex; align-items: center; justify-content: center;">
+                <img src="assets/images/logo.png" alt="Logo" style="width: 36px; height: auto; margin-right: 10px;">
                 <span
-                    style="font-size: 0.7em; background: #e0e7ff; padding: 2px 6px; border-radius: 4px; margin-left: auto; color: var(--primary);">
-                    <?php echo ucfirst($currentUser['role']); ?>
-                </span>
+                    style="color: #1e293b; font-weight: 800; letter-spacing: -0.5px; font-size: 1.2rem;">Helpdesk</span>
             </div>
             <nav class="sidebar-nav">
                 <!-- MENU UMUM (Semua Role) -->
@@ -67,8 +65,44 @@
         <!-- Main Content -->
         <main class="main-content">
             <header class="top-header">
-                <div class="user-info">
-                    <span>Halo, <strong><?php echo $currentUser['name']; ?></strong></span>
+                <div class="user-info" style="position: relative;">
+                    <?php
+                    $firstName = explode(' ', $currentUser['name'])[0];
+                    $avatar = !empty($currentUser['avatar_url']) ? $currentUser['avatar_url'] : "https://ui-avatars.com/api/?name=" . urlencode($currentUser['name']) . "&background=eff6ff&color=1d4ed8";
+                    ?>
+
+                    <div onclick="toggleProfileMenu()"
+                        style="cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 5px; border-radius: 8px; transition: background 0.2s;"
+                        onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                        <img src="<?php echo $avatar; ?>" alt="Profile"
+                            style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+
+                        <div style="display: flex; flex-direction: column; line-height: 1.2;">
+                            <span
+                                style="font-weight: 600; color: #334155; font-size: 0.95rem;"><?php echo htmlspecialchars($firstName); ?></span>
+                            <!-- Role Badge moved here for cleaner look, or just keep it -->
+                        </div>
+
+                        <span
+                            style="font-size: 0.75rem; background: #eff6ff; color: #1d4ed8; border: 1px solid #dbeafe; padding: 2px 8px; border-radius: 20px; text-transform: capitalize; font-weight: 600;">
+                            <?php echo $currentUser['role']; ?>
+                        </span>
+
+                        <i class="ri-arrow-down-s-line" style="color: #64748b;"></i>
+                    </div>
+
+                    <!-- Dropdown Menu -->
+                    <div id="profile-menu"
+                        style="display: none; position: absolute; right: 0; top: 55px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; width: 240px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); z-index: 100; overflow: hidden; animation: fadeIn 0.1s ease-out;">
+                        <div style="padding: 16px; background: #ffff;">
+                            <div style="font-weight: 700; color: #0f172a; font-size: 0.95rem;">
+                                <?php echo htmlspecialchars($currentUser['name']); ?>
+                            </div>
+                            <div style="font-size: 0.8rem; color: #64748b; margin-top: 2px;">
+                                <?php echo htmlspecialchars($currentUser['username']); ?>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </header>
 
@@ -129,6 +163,38 @@
             </div>
         </main>
     </div>
+    <script>
+        function toggleProfileMenu() {
+            const menu = document.getElementById('profile-menu');
+            if (menu.style.display === 'none' || menu.style.display === '') {
+                menu.style.display = 'block';
+            } else {
+                menu.style.display = 'none';
+            }
+        }
+
+        // Close when clicking outside
+        document.addEventListener('click', function (event) {
+            const menu = document.getElementById('profile-menu');
+            const trigger = document.querySelector('.user-info');
+            if (menu && menu.style.display === 'block' && !trigger.contains(event.target)) {
+                menu.style.display = 'none';
+            }
+        });
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </body>
 
 </html>

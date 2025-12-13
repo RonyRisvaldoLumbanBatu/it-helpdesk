@@ -20,6 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['credential'])) {
         $googleId = $payload['sub'];
         $name = $payload['name'];
 
+        $picture = $payload['picture'] ?? null;
+
         // VALIDASI DOMAIN KAMPUS
         $allowedDomains = ['satyaterrabhinneka.ac.id', 'students.satyaterrabhinneka.ac.id'];
         $emailParts = explode('@', $email);
@@ -42,12 +44,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['credential'])) {
 
             if ($user) {
                 // User Lama: Login langsung
-                // Update google_id jika belum ada (sinkronisasi)
-                if (empty($user['google_id'])) {
-                    $upd = $pdo->prepare("UPDATE users SET google_id = :gid WHERE id = :uid");
-                    $upd->execute(['gid' => $googleId, 'uid' => $user['id']]);
-                }
+                // Update avatar dan google_id
+                $upd = $pdo->prepare("UPDATE users SET google_id = :gid, avatar_url = :pic WHERE id = :uid");
+                $upd->execute(['gid' => $googleId, 'pic' => $picture, 'uid' => $user['id']]);
 
+                // Update session data
+                $user['avatar_url'] = $picture;
                 $_SESSION['user'] = $user;
                 header('Location: ?page=dashboard');
                 exit;
@@ -73,8 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['credential'])) {
                     $newRole = 'mahasiswa';
                 }
 
-                $sqlInsert = "INSERT INTO users (name, username, email, password, google_id, role) 
-                              VALUES (:nm, :usr, :eml, :pass, :gid, :role)";
+                $sqlInsert = "INSERT INTO users (name, username, email, password, google_id, role, avatar_url) 
+                              VALUES (:nm, :usr, :eml, :pass, :gid, :role, :pic)";
                 $stmtIns = $pdo->prepare($sqlInsert);
                 $stmtIns->execute([
                     'nm' => $name,
@@ -82,7 +84,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['credential'])) {
                     'eml' => $email,
                     'pass' => $randomPass,
                     'gid' => $googleId,
-                    'role' => $newRole
+                    'role' => $newRole,
+                    'pic' => $picture
                 ]);
 
                 // Ambil data user yg baru dibuat

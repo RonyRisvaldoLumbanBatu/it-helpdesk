@@ -70,17 +70,27 @@ try {
                     <td style="padding: 12px 16px; font-size: 0.9rem; color: var(--text-muted);">
                         <?php echo date('d M Y', strtotime($u['created_at'])); ?>
                     </td>
-                    <td style="padding: 12px 16px; text-align: right;">
+                    <td style="padding: 12px 16px; text-align: right; white-space: nowrap;">
                         <button
                             onclick="openEditModal('<?php echo $u['id']; ?>', '<?php echo htmlspecialchars($u['name'], ENT_QUOTES); ?>', '<?php echo htmlspecialchars($u['username'], ENT_QUOTES); ?>', '<?php echo htmlspecialchars($u['email'] ?? '', ENT_QUOTES); ?>', '<?php echo $u['role']; ?>')"
-                            style="color: var(--primary); background: none; border: none; cursor: pointer; margin-right: 10px;"
+                            style="width: 32px; height: 32px; border-radius: 6px; border: 1px solid #dbeafe; background: #eff6ff; color: var(--primary); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s;"
+                            onmouseover="this.style.background='#dbeafe'" onmouseout="this.style.background='#eff6ff'"
                             title="Edit User">
-                            <i class="ri-edit-line"></i>
+                            <i class="ri-pencil-line"></i>
                         </button>
-                        <!-- <button style="color: #ef4444; background: none; border: none; cursor: pointer;"
-                            title="Hapus (Belum Aktif)">
-                            <i class="ri-delete-bin-line"></i>
-                        </button> -->
+
+                        <?php if (isset($_SESSION['user']) && $u['id'] != $_SESSION['user']['id']): ?>
+                            <form action="?page=delete_user" method="POST" style="display:inline;"
+                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus user ini? \nPERINGATAN: Semua tiket dan data terkait user ini akan DIHAPUS PERMANEN!');">
+                                <input type="hidden" name="user_id" value="<?php echo $u['id']; ?>">
+                                <button type="submit"
+                                    style="width: 32px; height: 32px; border-radius: 6px; border: 1px solid #fee2e2; background: #fef2f2; color: #ef4444; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; margin-left: 6px; transition: all 0.2s;"
+                                    onmouseover="this.style.background='#fee2e2'" onmouseout="this.style.background='#fef2f2'"
+                                    title="Hapus User">
+                                    <i class="ri-delete-bin-line"></i>
+                                </button>
+                            </form>
+                        <?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -112,7 +122,6 @@ try {
                     <option value="mahasiswa">Mahasiswa</option>
                     <option value="staff">Staff</option>
                     <option value="admin">Administrator</option>
-                    <option value="user">User Biasa</option>
                 </select>
             </div>
 
@@ -156,7 +165,6 @@ try {
                     <option value="mahasiswa">Mahasiswa</option>
                     <option value="staff">Staff</option>
                     <option value="admin">Administrator</option>
-                    <option value="user">User Biasa</option>
                 </select>
             </div>
 
