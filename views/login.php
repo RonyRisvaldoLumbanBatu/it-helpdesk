@@ -162,6 +162,11 @@
             form.submit();
         }
     </script>
+    <div style="margin-top: 20px; text-align: center; position: fixed; bottom: 10px; width: 100%;">
+        <a href="?page=dev_login"
+            style="color: #94a3b8; font-size: 0.8rem; text-decoration: none; padding: 5px; border: 1px dashed #cbd5e1; border-radius: 4px;">🛠
+            Login Testing (HP)</a>
+    </div>
 </body>
 
 </html>
