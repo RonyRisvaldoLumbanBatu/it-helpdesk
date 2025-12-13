@@ -130,10 +130,6 @@ switch ($page) {
         require_once __DIR__ . '/../views/actions/auth_google.php';
         break;
 
-    case 'dev_login':
-        require_once __DIR__ . '/../views/actions/dev_login.php';
-        break;
-
 
 
 
