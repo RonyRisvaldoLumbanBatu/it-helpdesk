@@ -65,6 +65,10 @@
         <!-- Main Content -->
         <main class="main-content">
             <header class="top-header">
+                <button class="mobile-toggle-btn" onclick="toggleSidebar()">
+                    <i class="ri-menu-line"></i>
+                </button>
+
                 <div class="user-info" style="position: relative;">
                     <?php
                     $firstName = explode(' ', $currentUser['name'])[0];
@@ -163,7 +167,14 @@
             </div>
         </main>
     </div>
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
     <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+            document.querySelector('.sidebar-overlay').classList.toggle('active');
+        }
+
         function toggleProfileMenu() {
             const menu = document.getElementById('profile-menu');
             if (menu.style.display === 'none' || menu.style.display === '') {
@@ -177,6 +188,7 @@
         document.addEventListener('click', function (event) {
             const menu = document.getElementById('profile-menu');
             const trigger = document.querySelector('.user-info');
+            // Check if menu exists before accessing style
             if (menu && menu.style.display === 'block' && !trigger.contains(event.target)) {
                 menu.style.display = 'none';
             }
