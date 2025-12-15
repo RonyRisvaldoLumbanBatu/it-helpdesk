@@ -1,107 +1,108 @@
-# 🎫 IT Helpdesk System
+# 🎫 IT Helpdesk Premium System
 
-![Project Status](https://img.shields.io/badge/status-active-success.svg)
-![PHP Version](https://img.shields.io/badge/php-%5E8.0-777bb4.svg)
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![PHP Badge](https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![MySQL Badge](https://img.shields.io/badge/MySQL-Database-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Status Badge](https://img.shields.io/badge/Status-Stable-success?style=for-the-badge)
 
-Aplikasi **IT Helpdesk** modern berbasis web untuk mengelola tiket dukungan teknis, pelaporan insiden, dan permintaan layanan IT di **Universitas Satya Terra Bhinneka**. Dibangun dengan PHP Native yang bersih, performa tinggi, dan mudah dikembangkan.
+> **"Experience Internal Support like never before. Fast, Beautiful, and Intuitive."**
 
----
-
-## ✨ Fitur Utama
-
-### 🔐 Otentikasi & Keamanan
-*   **Login Aman**: Hashing password `Bcrypt`.
-*   **Google OAuth 2.0**: Login SSO menggunakan email kampus (@satyaterrabhinneka.ac.id).
-*   **Role-Based Access Control (RBAC)**:
-    *   **Admin**: Hak akses penuh (Kelola Tiket, User, Laporan).
-    *   **Staff**: User internal kampus.
-    *   **Mahasiswa**: User Mahasiswa.
-    *   **User**: User umum.
-*   **Session Management**: Proteksi CSRF & Session Hijacking.
-
-### 👤 Portal User (Mahasiswa/Staff)
-*   **Dashboard Personal**: Ringkasan aktivitas tiket.
-*   **Buat Tiket Baru**: Form pengajuan masalah yang mudah.
-*   **Diskusi Tiket**: Chat interaktif dengan Admin di dalam detail tiket.
-*   **History Tiket**: Melacak status (Pending, In Progress, Resolved).
-
-### 🛠️ Portal Admin
-*   **Dashboard Statistik**: Grafik Tren Tiket & Distribusi Status (Chart.js).
-*   **Manajemen Tiket**: Filter, Balas Komentar, Update Status.
-*   **Manajemen User**: Tambah, Edit, Reset Password User.
+A next-generation Ticketing System designed to replace clunky, old-school support tools. Built with **Native PHP** for maximum performance and **Modern CSS** for a premium user experience.
 
 ---
 
-## 💻 Cara Install & Menjalankan
+## 🎨 Why This Project?
 
-### Prasyarat
-*   PHP >= 8.0
-*   MySQL Server (XAMPP/Laragon)
-*   Composer (Opsional)
+Most internal tools differ significantly from consumer apps—they are often slow and ugly. **We changed that.**
+This IT Helpdesk System brings specific consumer-grade UI/UX to the corporate environment:
+- **WhatsApp-Style Chat**: Familiar, fast, and responsive.
+- **Crystal Clear Layout**: No more confusing menus.
+- **Instant Feedback**: Visual status updates that keep everyone in the loop.
 
-### Langkah 1: Clone Repository
-```bash
-git clone https://github.com/RonyRisvaldoLumbanBatu/it-helpdesk.git
-cd it-helpdesk
-```
+![Main Dashboard](docs/images/dashboard-cover.png)
 
-### Langkah 2: Setup Database
-1.  Buat database manual bernama `it_helpdesk`.
-2.  Import file `database/database.sql` ke database tersebut.
-3.  **PENTING**: Jalankan migrasi tambahan untuk fitur terbaru (Role & Komentar):
+## 🔥 Killer Features
+
+### 1. � The "Pro" Chat Interface
+We spent hours refining the chat experience (as seen in the commit history!):
+- **Smart Bubbles**: Distinct designs for 'Me' vs 'Others'.
+- **External Avatars**: Modern layout with avatars outside the bubble.
+- **Perfect Typography**: No weird gaps, optimised line-height, and `nl2br` logic for robust formatting.
+- **Adaptive Layout**: Looks perfect on a 6-inch phone screen AND a 27-inch monitor.
+
+### 2. � Role-Based Power
+- **Admin**: Full control. Manage tickets, users, and view analytics.
+- **Staff/Technician**: Pick up tickets, reply instantly, and close issues.
+- **User**: Submit requests in seconds and track progress in real-time.
+
+### 3. � Insightful Dashboard
+- Visual counters for **Pending**, **In Progress**, and **Resolved** tickets.
+- Color-coded badges for quick scanning.
+
+---
+
+## 📸 Visual Tour
+
+### 🔐 Secure & Modern Entry
+![Login Screen](docs/images/login-screen.png)
+
+### 💬 The Chat Experience
+
+| **Seamless Mobile Experience** | **Spacious Desktop View** |
+|:---:|:---:|
+| <img src="docs/images/mobile-chat.png" width="300" alt="Mobile Chat UI"> | <img src="docs/images/desktop-chat.png" width="500" alt="Desktop Chat UI"> |
+| *Compact, legible, and touch-friendly.* | *Optimized for productivity and clarity.* |
+
+---
+
+## 🛠️ Tech Stack (The "Secret Sauce")
+
+We kept it **Lightweight & Fast** by avoiding heavy frameworks for the core logic:
+- **Backend**: Native PHP 8 (No bloated dependencies).
+- **Frontend**: Vanilla CSS with modern Flexbox/Grid architecture.
+- **Database**: MySQL optimized for relational integrity.
+- **Assets**: Remix Icon & Google Fonts (Inter).
+
+---
+
+## ⚙️ Quick Start Guide
+
+Want to run this locally? It's easy.
+
+1.  **Clone the Magic**
     ```bash
-    php database/migrations/migrate_roles.php
-    php database/migrations/migrate_comments.php
+    git clone https://github.com/RonyRisvaldoLumbanBatu/it-helpdesk.git
+    cd it-helpdesk
     ```
 
-### Langkah 3: Konfigurasi
-Copy/Edit file `config/database.php` sesuai setting lokal Anda:
-```php
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'it_helpdesk');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-```
+2.  **Wake up the Database**
+    - Create a database (e.g., `db_it_helpdesk`).
+    - Import the provided SQL file: `database/db_helpdesk.sql`.
+    - Configure `config/database.php` with your credentials.
 
-**Setup Google Login (Opsional):**
-1.  Buka `views/login.php` dan `views/actions/auth_google.php`.
-2.  Ganti `CLIENT_ID` dengan ID dari Google Cloud Console Anda.
-3.  Pastikan `Authorized Origins` di Google Console mencakup `http://localhost:8000`.
+3.  **Launch!**
+    Start the built-in PHP server:
+    ```bash
+    php -S localhost:8000 -t public
+    ```
+    Open `http://localhost:8000` in your browser.
 
-### Langkah 4: Jalankan Aplikasi
-**Windows (Disarankan):**
-Double klik file **`dev.bat`**.
-
-**Manual:**
-```bash
-php -S localhost:8000 -t public
-```
-Akses di browser: **http://localhost:8000**
+4.  **Login Access**
+    - **Admin**: `admin@contoh.com` / `password123`
+    - **User**: `user@contoh.com` / `password123`
 
 ---
 
-## 📸 Screenshots
+## 🤝 Contributing
 
-| Login Page | Dashboard Admin |
-| :---: | :---: |
-| ![Login](docs/images/login.png) | ![Dashboard](docs/images/dashboard.png) |
-
-| Detail Tiket & Chat | Laporan Grafik |
-| :---: | :---: |
-| ![Ticket Detail](docs/images/ticket_detail.png) | ![Reports](docs/images/reports.png) |
-
----
-
-## 🔑 Akun Demo (Default)
-
-| Role | Username | Password |
-| :--- | :--- | :--- |
-| **Administrator** | `admin` | `password123` |
-| **User Biasa** | `user` | `password123` |
-
-> ⚠️ **Catatan SSO:** Login Google hanya bekerja untuk email `@satyaterrabhinneka.ac.id`. Role akan otomatis diset ke **Staff** atau **Mahasiswa** berdasarkan domain email.
+Got an idea to make it even cooler?
+1. Fork it.
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`).
+3. Commit your changes.
+4. Push to the branch.
+5. Open a Pull Request.
 
 ---
 
-Built with ❤️ by **Rony (Tim PDSI)**.
+<center>
+  <p>Made with ❤️ and a lot of ☕ by <b>Rony Risvaldo</b></p>
+</center>
