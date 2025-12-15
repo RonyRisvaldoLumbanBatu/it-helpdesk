@@ -25,11 +25,181 @@ $config = $statusConfig[$ticket['status']] ?? $statusConfig['pending'];
         <div
             style="background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); border: 1px solid var(--border); overflow: hidden;">
 
+            <style>
+                /* --- GENERAL TICKET STYLES --- */
+                .ticket-title {
+                    font-size: 1.75rem;
+                    font-weight: 700;
+                    color: var(--text-main);
+                    margin: 0;
+                    line-height: 1.3;
+                    word-wrap: break-word;
+                    word-break: break-word;
+                }
+
+                .ticket-header-flex {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    gap: 20px;
+                }
+
+                .ticket-card-padding {
+                    padding: 24px 32px;
+                }
+
+                .local-description-box {
+                    background: #fafafa;
+                    border: 1px solid var(--border);
+                    border-radius: 8px;
+                    padding: 20px;
+                    line-height: 1.7;
+                    color: #334155;
+                    font-size: 1rem;
+                    white-space: pre-wrap;
+                    font-family: 'Inter', sans-serif;
+                    text-align: left;
+                    word-wrap: break-word;
+                }
+
+                /* --- CHAT SYSTEM STYLES --- */
+                .chat-container {
+                    display: flex;
+                    gap: 12px;
+                    margin-bottom: 4px;
+                    width: 100%;
+                }
+
+                .chat-container.me {
+                    justify-content: flex-end;
+                }
+
+                .chat-container.other {
+                    justify-content: flex-start;
+                }
+
+                .chat-avatar {
+                    flex-shrink: 0;
+                    width: 38px;
+                    height: 38px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: bold;
+                    font-size: 0.9rem;
+                    align-self: flex-start;
+                    margin-top: 4px;
+                }
+
+                .chat-avatar.me {
+                    background: #bfdbfe;
+                    color: #1d4ed8;
+                }
+
+                .chat-avatar.other {
+                    background: #e0e7ff;
+                    color: #4338ca;
+                }
+
+                .chat-bubble-wrapper {
+                    max-width: 75%;
+                    min-width: auto;
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                .chat-container.me .chat-bubble-wrapper {
+                    align-items: flex-end;
+                }
+
+                .chat-container.other .chat-bubble-wrapper {
+                    align-items: flex-start;
+                }
+
+                .chat-bubble {
+                    padding: 10px 20px 12px;
+                    border-radius: 16px;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+                    width: 100%;
+                }
+
+                .chat-bubble.me {
+                    background: #3b82f6;
+                    color: white;
+                    border-bottom-right-radius: 2px;
+                }
+
+                .chat-bubble.other {
+                    background: #f1f5f9;
+                    color: #1e293b;
+                    border-bottom-left-radius: 2px;
+                }
+
+                .chat-header {
+                    margin-bottom: 0px;
+                    font-size: 0.8rem;
+                    font-weight: bold;
+                }
+
+                .chat-bubble.me .chat-header {
+                    color: #bfdbfe;
+                }
+
+                .chat-bubble.other .chat-header {
+                    color: #64748b;
+                }
+
+                .chat-body {
+                    font-size: 0.95rem;
+                    line-height: 1.6;
+                    word-wrap: break-word;
+                    text-align: justify !important;
+                }
+
+                .chat-footer {
+                    margin-top: 8px;
+                    font-size: 0.65rem;
+                    opacity: 0.85;
+                }
+
+                .chat-bubble.me .chat-footer {
+                    color: #bfdbfe;
+                    text-align: right;
+                }
+
+                .chat-bubble.other .chat-footer {
+                    color: #64748b;
+                    text-align: left;
+                }
+
+                /* MOBILE TWEAKS */
+                @media (max-width: 600px) {
+                    .ticket-header-flex {
+                        flex-direction: column;
+                        align-items: flex-start;
+                    }
+
+                    .ticket-title {
+                        font-size: 1.25rem !important;
+                    }
+
+                    .ticket-card-padding {
+                        padding: 20px 15px !important;
+                    }
+
+                    .local-description-box {
+                        padding: 15px !important;
+                        font-size: 0.95rem !important;
+                    }
+                }
+            </style>
+
             <!-- Header Section -->
-            <div style="padding: 24px 32px; border-bottom: 1px solid var(--border); background: #fdfdfd;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                    <div>
-                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+            <div class="ticket-card-padding" style="border-bottom: 1px solid var(--border); background: #fdfdfd;">
+                <div class="ticket-header-flex">
+                    <div style="width: 100%;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap;">
                             <span
                                 style="font-family: monospace; color: var(--text-muted); font-size: 0.9rem; background: #f1f5f9; padding: 2px 8px; border-radius: 4px;">
                                 #<?php echo $ticket['id']; ?>
@@ -38,15 +208,14 @@ $config = $statusConfig[$ticket['status']] ?? $statusConfig['pending'];
                                 <?php echo date('d F Y, H:i', strtotime($ticket['created_at'])); ?> WIB
                             </span>
                         </div>
-                        <h1
-                            style="font-size: 1.75rem; font-weight: 700; color: var(--text-main); margin: 0; line-height: 1.3;">
+                        <h1 class="ticket-title">
                             <?php echo htmlspecialchars($ticket['subject']); ?>
                         </h1>
                     </div>
 
                     <!-- Status Badge -->
                     <div
-                        style="background: <?php echo $config['bg']; ?>; color: <?php echo $config['text']; ?>; border: 1px solid <?php echo $config['border']; ?>; padding: 6px 16px; border-radius: 99px; display: flex; align-items: center; gap: 6px; white-space: nowrap; font-weight: 600; font-size: 0.85rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                        style="background: <?php echo $config['bg']; ?>; color: <?php echo $config['text']; ?>; border: 1px solid <?php echo $config['border']; ?>; padding: 6px 16px; border-radius: 99px; display: flex; align-items: center; gap: 6px; white-space: nowrap; font-weight: 600; font-size: 0.85rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05); flex-shrink: 0;">
                         <i class="<?php echo $config['icon']; ?>"></i>
                         <?php echo ucfirst(str_replace('_', ' ', $ticket['status'])); ?>
                     </div>
@@ -77,7 +246,13 @@ $config = $statusConfig[$ticket['status']] ?? $statusConfig['pending'];
                     style="font-size: 1rem; font-weight: 600; color: var(--text-main); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
                     <i class="ri-file-text-line" style="color: var(--secondary);"></i> Deskripsi Tiket
                 </h3>
-                <div style="background: #fafafa; border: 1px solid var(--border); border-radius: 8px; padding: 20px; line-height: 1.7; color: #334155; font-size: 1rem; white-space: pre-wrap; font-family: 'Inter', sans-serif; text-align: left;"><?php echo htmlspecialchars($ticket['description']); ?></div>
+
+                <?php
+                // Clean Description Logic
+                $cleanDesc = str_replace(['. ', ".\r\n", ".\n"], [' ', "\r\n", "\n"], $ticket['description']);
+                $cleanDesc = rtrim($cleanDesc, '.');
+                ?>
+                <div class="local-description-box"><?php echo htmlspecialchars($cleanDesc); ?></div>
 
                 <!-- Comments Section -->
                 <div style="margin-top: 40px; border-top: 1px solid var(--border); padding-top: 30px;">
@@ -97,37 +272,39 @@ $config = $statusConfig[$ticket['status']] ?? $statusConfig['pending'];
                         <?php else: ?>
                             <?php foreach ($comments as $c): ?>
                                 <?php
-                                $isAdmin = ($c['user_role'] === 'admin');
                                 $isMe = ($c['user_id'] == $currentUser['id']);
-                                $bgColor = $isAdmin ? '#eff6ff' : '#f9fafb'; // Admin Blue, User Grey
-                                $borderColor = $isAdmin ? '#bfdbfe' : '#e2e8f0';
+                                $roleClass = $isMe ? 'me' : 'other';
                                 ?>
-                                <div
-                                    style="display: flex; gap: 15px; <?php echo $isAdmin ? 'flex-direction: row-reverse;' : ''; ?>">
-                                    <!-- Avatar -->
-                                    <div
-                                        style="width: 40px; height: 40px; border-radius: 50%; background: <?php echo $isAdmin ? 'var(--primary)' : '#cbd5e1'; ?>; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">
-                                        <?php echo strtoupper(substr($c['user_name'], 0, 1)); ?>
+                                <div class="chat-container <?php echo $roleClass; ?>">
+
+                                    <!-- AVATAR LEFT (Other) -->
+                                    <?php if (!$isMe): ?>
+                                        <div class="chat-avatar other">
+                                            <?php echo strtoupper(substr($c['user_name'], 0, 1)); ?>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <div class="chat-bubble-wrapper">
+                                        <div class="chat-bubble <?php echo $roleClass; ?>">
+                                            <!-- NAME -->
+                                            <div class="chat-header">
+                                                <?php echo htmlspecialchars($c['user_name']); ?>
+                                            </div>
+                                            <!-- BODY (Compact one-liner to avoid whitespace) -->
+                                            <div class="chat-body"><?php echo nl2br(htmlspecialchars(trim($c['comment']))); ?></div>
+                                            <!-- DATE -->
+                                            <div class="chat-footer">
+                                                <?php echo date('d M H:i', strtotime($c['created_at'])); ?>
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <!-- Bubble -->
-                                    <div
-                                        style="background: <?php echo $bgColor; ?>; border: 1px solid <?php echo $borderColor; ?>; padding: 15px; border-radius: 12px; max-width: 80%; position: relative; text-align: left;">
-                                        <div
-                                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 10px;">
-                                            <strong style="color: var(--text-main); font-size: 0.9rem;">
-                                                <?php echo htmlspecialchars($c['user_name']); ?>
-                                                <?php if ($isAdmin): ?>
-                                                    <span
-                                                        style="background: var(--primary); color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; margin-left: 5px;">ADMIN</span>
-                                                <?php endif; ?>
-                                            </strong>
-                                            <span style="font-size: 0.75rem; color: var(--text-muted);">
-                                                <?php echo date('d M H:i', strtotime($c['created_at'])); ?>
-                                            </span>
+                                    <!-- AVATAR RIGHT (Me) -->
+                                    <?php if ($isMe): ?>
+                                        <div class="chat-avatar me">
+                                            <?php echo strtoupper(substr($c['user_name'], 0, 1)); ?>
                                         </div>
-                                        <div style="color: #334155; line-height: 1.5; font-size: 0.95rem; white-space: pre-wrap;"><?php echo htmlspecialchars($c['comment']); ?></div>
-                                    </div>
+                                    <?php endif; ?>
                                 </div>
                             <?php endforeach; ?>
                         <?php endif; ?>
@@ -136,14 +313,19 @@ $config = $statusConfig[$ticket['status']] ?? $statusConfig['pending'];
                     <!-- Reply Form -->
                     <?php if ($ticket['status'] !== 'resolved' && $ticket['status'] !== 'rejected'): ?>
                         <form action="?page=add_comment" method="POST"
-                            style="background: #fff; border: 1px solid var(--border); padding: 5px; border-radius: 12px; box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.05);">
+                            style="background: #fff; border: 1px solid var(--border); padding: 15px; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);">
                             <input type="hidden" name="ticket_id" value="<?php echo $ticket['id']; ?>">
-                            <textarea name="comment" required placeholder="Tulis balasan Anda di sini..."
-                                style="width: 100%; border: none; padding: 15px; outline: none; resize: vertical; min-height: 80px; font-family: inherit; font-size: 0.95rem; border-radius: 8px;"></textarea>
-                            <div
-                                style="border-top: 1px solid #f1f5f9; padding: 10px; display: flex; justify-content: flex-end;">
-                                <button type="submit" class="btn btn-primary" style="padding: 8px 20px;">
-                                    <i class="ri-send-plane-fill" style="margin-right: 5px;"></i> Kirim Balasan
+
+                            <label
+                                style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-main); font-size: 0.9rem;">Tulis
+                                Balasan</label>
+
+                            <textarea name="comment" required placeholder="Ketik pesan Anda..."
+                                style="width: 100%; border: 1px solid #cbd5e1; padding: 12px; outline: none; resize: vertical; min-height: 100px; font-family: inherit; font-size: 0.95rem; border-radius: 8px; transition: border-color 0.2s; background: #f8fafc;"></textarea>
+
+                            <div style="margin-top: 10px; display: flex; justify-content: flex-end;">
+                                <button type="submit" class="btn btn-primary" style="padding: 10px 24px; border-radius: 8px;">
+                                    <i class="ri-send-plane-fill" style="margin-right: 8px;"></i> Kirim
                                 </button>
                             </div>
                         </form>

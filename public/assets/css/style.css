@@ -229,6 +229,39 @@ body {
     transition: opacity 0.3s;
 }
 
+/* --- GLOBAL TABLE STYLES (Force Horizontal Scroll) --- */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
+    padding-bottom: 5px;
+}
+
+/* Scrollbar Styling */
+.table-responsive::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+.table-responsive table {
+    min-width: 800px;
+}
+
+.table-responsive th,
+.table-responsive td,
+.table-responsive td * {
+    white-space: nowrap !important;
+    padding: 0.75rem 0.5rem;
+}
+
 @media (max-width: 768px) {
     .sidebar {
         transform: translateX(-100%);
@@ -259,12 +292,6 @@ body {
     .content-body {
         padding: 1rem;
         /* Smaller padding */
-    }
-
-    /* Table Responsive Wrapper */
-    .table-responsive {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
     }
 
     /* Show overlay when active */

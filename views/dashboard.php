@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - IT Helpdesk</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=<?php echo time(); ?>">
     <!-- Icon Library -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
 </head>
@@ -14,11 +14,37 @@
     <div class="dashboard-layout">
         <!-- Sidebar -->
         <aside class="sidebar">
-            <div class="sidebar-header" style="display: flex; align-items: center; justify-content: center;">
-                <img src="assets/images/logo.png" alt="Logo" style="width: 36px; height: auto; margin-right: 10px;">
-                <span
-                    style="color: #1e293b; font-weight: 800; letter-spacing: -0.5px; font-size: 1.2rem;">Helpdesk</span>
+            <div class="sidebar-header"
+                style="display: flex; align-items: center; justify-content: center; position: relative; padding: 0 1rem;">
+                <!-- Toggle Button (Left Side) -->
+                <button onclick="toggleSidebar()" class="mobile-close-btn"
+                    style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);">
+                    <i class="ri-menu-line"></i>
+                </button>
+
+                <div style="display: flex; align-items: center;">
+                    <img src="assets/images/logo.png" alt="Logo" style="width: 36px; height: auto; margin-right: 10px;">
+                    <span
+                        style="color: #1e293b; font-weight: 800; letter-spacing: -0.5px; font-size: 1.2rem;">Helpdesk</span>
+                </div>
             </div>
+            <style>
+                .mobile-close-btn {
+                    display: none;
+                    background: none;
+                    border: none;
+                    font-size: 1.5rem;
+                    color: #64748b;
+                    cursor: pointer;
+                    padding: 0;
+                }
+
+                @media (max-width: 768px) {
+                    .mobile-close-btn {
+                        display: block;
+                    }
+                }
+            </style>
             <nav class="sidebar-nav">
                 <!-- MENU UMUM (Semua Role) -->
                 <a href="?page=dashboard" class="nav-item <?php echo (!isset($_GET['action'])) ? 'active' : ''; ?>">

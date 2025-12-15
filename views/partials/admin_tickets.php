@@ -42,7 +42,44 @@ try {
     </div>
 </div>
 
-<div style="background: white; border-radius: 8px; border: 1px solid var(--border); overflow: hidden;">
+<style>
+    /* FORCE STYLES LOCALLY FOR ADMIN TICKETS */
+    .local-responsive-table {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        margin-bottom: 1rem;
+        padding-bottom: 15px;
+    }
+
+    .local-responsive-table table {
+        min-width: 1000px !important;
+    }
+
+    .local-responsive-table th,
+    .local-responsive-table td,
+    .local-responsive-table td div,
+    .local-responsive-table td span,
+    .local-responsive-table td a,
+    .local-responsive-table td strong {
+        white-space: nowrap !important;
+    }
+
+    .local-responsive-table::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .local-responsive-table::-webkit-scrollbar-thumb {
+        background: #94a3b8;
+        border-radius: 4px;
+    }
+
+    .local-responsive-table::-webkit-scrollbar-track {
+        background: #f1f5f9;
+    }
+</style>
+
+<div class="local-responsive-table"
+    style="background: white; border-radius: 8px; border: 1px solid var(--border); overflow: hidden;">
     <table style="width: 100%; border-collapse: collapse;">
         <thead style="background: #f8fafc; border-bottom: 1px solid var(--border);">
             <tr>

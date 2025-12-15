@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 // Simple Router
 $page = $_GET['page'] ?? 'login';
 
