@@ -47,10 +47,17 @@ We spent hours refining the chat experience (as seen in the commit history!):
 
 ### 💬 The Chat Experience
 
-| **Seamless Mobile Experience** | **Spacious Desktop View** |
-|:---:|:---:|
-| <img src="docs/images/mobile-chat.png" width="300" alt="Mobile Chat UI"> | <img src="docs/images/desktop-chat.png" width="500" alt="Desktop Chat UI"> |
-| *Compact, legible, and touch-friendly.* | *Optimized for productivity and clarity.* |
+#### 📱 Seamless Mobile Experience
+*Compact, legible, and touch-friendly.*
+
+![Mobile Chat UI](docs/images/mobile-chat.png)
+
+<br>
+
+#### 💻 Spacious Desktop View
+*Optimized for productivity and clarity.*
+
+![Desktop Chat UI](docs/images/desktop-chat.png)
 
 ---
 
