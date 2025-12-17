@@ -119,6 +119,18 @@ switch ($page) {
         require_once __DIR__ . '/../views/actions/fetch_comments.php';
         break;
 
+    case 'api_search':
+        if (!isset($_SESSION['user']))
+            exit;
+        require_once __DIR__ . '/../views/actions/api_search.php';
+        break;
+
+    case 'api_notifications':
+        if (!isset($_SESSION['user']))
+            exit;
+        require_once __DIR__ . '/../views/actions/api_notifications.php';
+        break;
+
     case 'create_user':
         require_once __DIR__ . '/../views/actions/create_user.php';
         break;

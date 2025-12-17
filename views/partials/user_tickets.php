@@ -5,10 +5,19 @@ require_once __DIR__ . '/../../src/Database.php';
 try {
     $pdo = Database::getInstance();
     $userId = $_SESSION['user']['id'];
+    $search = $_GET['search'] ?? '';
 
-    $sql = "SELECT * FROM tickets WHERE user_id = :uid ORDER BY created_at DESC";
+    $sql = "SELECT * FROM tickets WHERE user_id = :uid";
+    $params = ['uid' => $userId];
+
+    if (!empty($search)) {
+        $sql .= " AND (subject LIKE :search OR description LIKE :search)";
+        $params['search'] = "%$search%";
+    }
+
+    $sql .= " ORDER BY created_at DESC";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute(['uid' => $userId]);
+    $stmt->execute($params);
     $myTickets = $stmt->fetchAll();
 
 } catch (Exception $e) {

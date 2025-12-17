@@ -1,16 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-    --primary: #2563eb;
-    --primary-dark: #1d4ed8;
+    /* BHINNEKA BRAND THEME */
+    --primary: #1e3a8a;
+    /* Deep Blue (Universitas) */
+    --primary-light: #eff6ff;
+    --primary-dark: #172554;
+    --accent: #dc2626;
+    /* Red (Semangat) */
+
     --secondary: #64748b;
-    --bg-body: #f1f5f9;
+    --bg-body: #f8fafc;
+    /* Cool Grey */
     --bg-card: #ffffff;
     --text-main: #0f172a;
     --text-muted: #64748b;
     --border: #e2e8f0;
     --sidebar-width: 260px;
-    --header-height: 64px;
+    --header-height: 70px;
+    /* Slightly taller */
 }
 
 * {
@@ -31,23 +39,26 @@ body {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    padding: 0.75rem 1.5rem;
+    padding: 0.6rem 1.2rem;
     border-radius: 0.5rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     border: none;
-    transition: 0.2s;
+    transition: all 0.2s ease;
     text-decoration: none;
-    font-size: 0.875rem;
+    font-size: 0.9rem;
 }
 
 .btn-primary {
     background: var(--primary);
     color: white;
+    box-shadow: 0 4px 6px -1px rgba(30, 58, 138, 0.2);
 }
 
 .btn-primary:hover {
     background: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 8px -1px rgba(30, 58, 138, 0.3);
 }
 
 .w-full {
@@ -100,18 +111,19 @@ body {
     position: relative;
 }
 
-/* Sidebar */
+/* Sidebar (Brand Theme) */
 .sidebar {
     width: var(--sidebar-width);
-    background: var(--bg-card);
-    border-right: 1px solid var(--border);
+    background: var(--primary);
+    /* Brand Blue BG */
+    border-right: 1px solid var(--primary-dark);
     position: fixed;
     height: 100vh;
     display: flex;
     flex-direction: column;
     z-index: 50;
-    /* Above content */
     transition: transform 0.3s ease;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.05);
 }
 
 .sidebar-header {
@@ -121,8 +133,47 @@ body {
     padding: 0 1.5rem;
     font-weight: 700;
     font-size: 1.25rem;
+    background: var(--primary);
+    /* Blue Header */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    justify-content: center;
+    /* Center the Pill */
+    position: relative;
+}
+
+/* BRAND PILL: White Capsule */
+.brand-pill {
+    background: white;
+    display: flex;
+    align-items: center;
+    padding: 6px 16px 6px 12px;
+    border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.brand-pill img {
+    width: 32px;
+    height: auto;
+    margin-right: 8px;
+    /* Clean image style */
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.brand-pill span {
     color: var(--primary);
-    border-bottom: 1px solid var(--border);
+    /* Blue Text */
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: -0.5px;
+}
+
+.mobile-close-btn {
+    position: absolute;
+    left: 1rem;
+    color: white !important;
 }
 
 .sidebar-nav {
@@ -134,22 +185,59 @@ body {
     display: flex;
     align-items: center;
     padding: 0.75rem 1rem;
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
     border-radius: 0.5rem;
     margin-bottom: 0.5rem;
     transition: 0.2s;
+    font-weight: 500;
 }
 
-.nav-item:hover,
+.nav-item i {
+    opacity: 0.9;
+}
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+}
+
 .nav-item.active {
-    background: #eff6ff;
+    background: white;
     color: var(--primary);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    font-weight: 700;
 }
 
 .sidebar-footer {
     padding: 1.5rem;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--primary);
+    /* Blue Footer */
+}
+
+/* LOGOUT BUTTON: Red Block */
+.sidebar-footer .nav-item {
+    background: #dc2626;
+    /* Red BG */
+    color: white !important;
+    justify-content: center;
+    font-weight: 600;
+    margin-bottom: 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    border: 1px solid #b91c1c;
+}
+
+.sidebar-footer .nav-item:hover {
+    background: #ef4444;
+    /* Lighter Red Hover */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-footer .nav-item i {
+    margin-right: 8px;
+    /* Ensure icon spacing */
 }
 
 /* Main Content */
@@ -195,9 +283,169 @@ body {
     transition: 0.2s;
 }
 
-.form-control:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+/* TOP HEADER: BLUE THEME */
+.top-header {
+    background-color: var(--primary) !important;
+    /* Deep Blue */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* SEARCH BAR */
+.header-search {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.header-search input {
+    width: 100%;
+    padding: 10px 16px 10px 44px;
+    border-radius: 99px;
+    border: none;
+    background: white;
+    /* White BG */
+    font-size: 0.9rem;
+    color: var(--primary);
+    /* Blue Text */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
+}
+
+.header-search i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary);
+    /* Blue Icon */
+}
+
+.header-search input:focus {
+    background: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    outline: none;
+}
+
+/* HEADER RIGHT CONTAINER */
+.header-right {
+    display: flex;
+    /* Critical Fix */
+    align-items: center;
+    gap: 20px;
+}
+
+/* Header Right Actions */
+.notification-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: white;
+    /* White Circle */
+    color: var(--primary);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    position: relative;
+    margin-right: 0;
+    cursor: pointer;
+}
+
+.notification-btn:hover {
+    transform: translateY(-2px);
+    background: white;
+}
+
+.badget-dot {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 10px;
+    height: 10px;
+    background: #ef4444;
+    /* Red-500 */
+    border: 2px solid white;
+    border-radius: 50%;
+    display: none;
+    /* Controlled by JS */
+    z-index: 10;
+}
+
+/* User Info Styling */
+.user-pill,
+.user-info>div[onclick] {
+    background: white !important;
+    border-radius: 50px !important;
+    padding: 6px 16px 6px 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    transition: transform 0.2s;
+}
+
+.user-pill:hover,
+.user-info>div[onclick]:hover {
+    transform: translateY(-2px);
+    background: white !important;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.user-text span,
+.user-name,
+.user-details span {
+    color: var(--primary) !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+}
+
+.user-role-badge,
+.user-info span[style*="background: #eff6ff"] {
+    background: transparent !important;
+    color: #64748b !important;
+    border: none !important;
+    padding: 0 0 0 5px !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+}
+
+.ri-arrow-down-s-line {
+    color: var(--primary) !important;
+}
+
+.user-role-badge {
+    background: #eff6ff !important;
+    color: var(--primary) !important;
+}
+
+.ri-arrow-down-s-line {
+    color: var(--primary) !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .header-search {
+        display: none;
+    }
+
+    .user-text {
+        display: none;
+    }
+
+    .user-pill {
+        padding: 4px !important;
+        border-radius: 50% !important;
+    }
+
+    .user-role-badge,
+    .ri-arrow-down-s-line {
+        display: none !important;
+    }
 }
 
 /* --- MOBILE RESPONSIVE --- */
