@@ -262,7 +262,7 @@ $config = $statusConfig[$ticket['status']] ?? $statusConfig['pending'];
                     </h3>
 
                     <!-- Comments List -->
-                    <div class="comments-list"
+                    <div id="chat-history-container" class="comments-list"
                         style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px;">
                         <?php if (empty($comments)): ?>
                             <div
@@ -309,6 +309,29 @@ $config = $statusConfig[$ticket['status']] ?? $statusConfig['pending'];
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </div>
+
+                    <!-- AJAX AUTO REFRESH SCRIPT -->
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const ticketId = <?php echo $ticket['id']; ?>;
+                            const container = document.getElementById("chat-history-container");
+
+                            function loadComments() {
+                                fetch('?page=fetch_comments&ticket_id=' + ticketId)
+                                    .then(response => response.text())
+                                    .then(data => {
+                                        // Update content only if different? 
+                                        // For simplicity and to avoid glitch, we just replace.
+                                        // A better way is to verify if content changed length, but simple replace is OK for MVP.
+                                        container.innerHTML = data;
+                                    })
+                                    .catch(err => console.error("Error fetching comments:", err));
+                            }
+
+                            // Refresh every 3 seconds
+                            setInterval(loadComments, 3000);
+                        });
+                    </script>
 
                     <!-- Reply Form -->
                     <?php if ($ticket['status'] !== 'resolved' && $ticket['status'] !== 'rejected'): ?>

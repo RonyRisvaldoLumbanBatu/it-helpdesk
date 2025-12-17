@@ -113,6 +113,12 @@ switch ($page) {
         require_once __DIR__ . '/../views/actions/add_comment.php';
         break;
 
+    case 'fetch_comments':
+        if (!isset($_SESSION['user']))
+            exit; // Security check
+        require_once __DIR__ . '/../views/actions/fetch_comments.php';
+        break;
+
     case 'create_user':
         require_once __DIR__ . '/../views/actions/create_user.php';
         break;
