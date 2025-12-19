@@ -465,7 +465,7 @@ body {
     background: none;
     border: none;
     cursor: pointer;
-    color: var(--text-main);
+    color: white !important;
     margin-right: auto;
     /* Push user info to right */
 }
