@@ -1,115 +1,107 @@
-# 🎫 IT Helpdesk Premium System
+# 🎫 IT Helpdesk Premium System (Bahasa Indonesia Version)
 
 ![PHP Badge](https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php&logoColor=white)
 ![MySQL Badge](https://img.shields.io/badge/MySQL-Database-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 ![Status Badge](https://img.shields.io/badge/Status-Stable-success?style=for-the-badge)
 
-> **"Experience Internal Support like never before. Fast, Beautiful, and Intuitive."**
+> **"Bukan Sekadar Sistem Tiket Biasa. Ini Adalah Revolusi Pengalaman Support Internal."**
 
-A next-generation Ticketing System designed to replace clunky, old-school support tools. Built with **Native PHP** for maximum performance and **Modern CSS** for a premium user experience.
+Apakah Anda lelah dengan tampilan aplikasi kantor yang kaku, lambat, dan membosankan?  
+Kami mengubah paradigma itu. **IT Helpdesk System** ini dibangun dengan dedikasi tinggi pada *User Experience (UX)* dan estetika antarmuka (*UI*), memberikan nuansa aplikasi modern kelas dunia langsung ke lingkungan kerja Anda.
 
 ---
 
-## 🎨 Why This Project?
+## 🚀 Mengapa Anda Akan Menyukainya?
 
-Most internal tools differ significantly from consumer apps—they are often slow and ugly. **We changed that.**
-This IT Helpdesk System brings specific consumer-grade UI/UX to the corporate environment:
-- **WhatsApp-Style Chat**: Familiar, fast, and responsive.
-- **Crystal Clear Layout**: No more confusing menus.
-- **Instant Feedback**: Visual status updates that keep everyone in the loop.
+Kebanyakan sistem internal perusahaan dibuat "asal jalan". Proyek ini dibuat untuk **dinikmati**.
+Kami menggabungkan performa tinggi **Native PHP** dengan **Modern CSS** untuk menciptakan pengalaman yang mulus, responsif, dan menyenangkan.
+
+### ✨ Fitur Unggulan yang Memanjakan Mata:
+*   **Antarmuka Dashboard Premium**: Tampilan bersih, kartu aktivitas yang interaktif, dan statistik yang mudah dibaca.
+*   **Diskusi Tiket Gaya WhatsApp**: Lupakan email berantai. Ngobrol dengan tim support layaknya *chatting* dengan teman. Cepat, realtime, dan intuitif.
+*   **Responsif di Segala Perangkat**: Sempurna di Laptop, Tablet, maupun Smartphone. Ikon tidak gepeng, layout tidak berantakan.
+*   **Filter & Pencarian Pintar**: Pantau tiket "Menunggu", "Diproses", atau "Selesai" dalam sekali klik.
+*   **Lokalisasi Penuh**: Menggunakan Bahasa Indonesia yang baku namun tetap luwes untuk memudahkan komunikasi.
+
+---
+
+## 📸 Jelajahi Tampilan (Dokumentasi)
+
+Lihat bagaimana kami mentransformasi proses *support* menjadi pengalaman visual yang menarik.
+
+### 1. Dashboard Utama yang Informatif
+Pusat kontrol Anda. Pantau status tiket, aktivitas terbaru, dan statistik penting dalam satu pandangan.
 
 ![Main Dashboard](docs/images/dashboard-cover.png)
 
-## 🔥 Killer Features
+### 2. Gerbang Masuk Modern (Login)
+Kesan pertama itu penting. Halaman login yang aman, simpel, dan elegan.
 
-### 1. � The "Pro" Chat Interface
-We spent hours refining the chat experience (as seen in the commit history!):
-- **Smart Bubbles**: Distinct designs for 'Me' vs 'Others'.
-- **External Avatars**: Modern layout with avatars outside the bubble.
-- **Perfect Typography**: No weird gaps, optimised line-height, and `nl2br` logic for robust formatting.
-- **Adaptive Layout**: Looks perfect on a 6-inch phone screen AND a 27-inch monitor.
-
-### 2. � Role-Based Power
-- **Admin**: Full control. Manage tickets, users, and view analytics.
-- **Staff/Technician**: Pick up tickets, reply instantly, and close issues.
-- **User**: Submit requests in seconds and track progress in real-time.
-
-### 3. � Insightful Dashboard
-- Visual counters for **Pending**, **In Progress**, and **Resolved** tickets.
-- Color-coded badges for quick scanning.
-
----
-
-## 📸 Visual Tour
-
-### 🔐 Secure & Modern Entry
 ![Login Screen](docs/images/login-screen.png)
 
-### 💬 The Chat Experience
+### 3. Pengalaman Chatting Tanpa Batas
+Antarmuka percakapan yang dirancang khusus untuk kejelasan komunikasi.
 
-#### 📱 Seamless Mobile Experience
-*Compact, legible, and touch-friendly.*
+#### 📱 Tampilan Mobile (Responsif)
+Tetap produktif di mana saja. UI beradaptasi sempurna dengan layar kecil.
 
 ![Mobile Chat UI](docs/images/mobile-chat.png)
 
-<br>
-
-#### 💻 Spacious Desktop View
-*Optimized for productivity and clarity.*
+#### 💻 Tampilan Desktop (Luas & Detail)
+Memanfaatkan lebar layar untuk menampilkan informasi secara maksimal.
 
 ![Desktop Chat UI](docs/images/desktop-chat.png)
 
 ---
 
-## 🛠️ Tech Stack (The "Secret Sauce")
+## 🛠️ Dapur Pacu (Tech Stack)
 
-We kept it **Lightweight & Fast** by avoiding heavy frameworks for the core logic:
-- **Backend**: Native PHP 8 (No bloated dependencies).
-- **Frontend**: Vanilla CSS with modern Flexbox/Grid architecture.
-- **Database**: MySQL optimized for relational integrity.
-- **Assets**: Remix Icon & Google Fonts (Inter).
+Kami percaya pada kekuatan kesederhanaan. Tanpa framework berat, tanpa *bloatware*. Murni performa.
+
+-   **Bahasa Utama**: PHP 8+ (Native) - Kencang & Stabil.
+-   **Database**: MySQL - Penyimpanan data yang relasional dan aman.
+-   **Gaya (Styling)**: Vanilla CSS Modern (Flexbox & Grid) - Ringan & Fleksibel.
+-   **Aset Ikon**: Remix Icon - Konsisten & Tajam.
+-   **Font**: Google Fonts (Inter) - Keterbacaan tinggi.
 
 ---
 
-## ⚙️ Quick Start Guide
+## ⚙️ Cara Instalasi (Coba Sekarang!)
 
-Want to run this locally? It's easy.
+Penasaran ingin mencobanya di komputer Anda? Ikuti langkah mudah ini:
 
-1.  **Clone the Magic**
+1.  **Clone Repository Ini**
     ```bash
     git clone https://github.com/RonyRisvaldoLumbanBatu/it-helpdesk.git
     cd it-helpdesk
     ```
 
-2.  **Wake up the Database**
-    - Create a database (e.g., `db_it_helpdesk`).
-    - Import the provided SQL file: `database/db_helpdesk.sql`.
-    - Configure `config/database.php` with your credentials.
+2.  **Siapkan Database**
+    -   Buat database baru di MySQL (misal: `db_helpdesk`).
+    -   Import file SQL yang sudah kami sediakan: `database/db_helpdesk.sql`.
+    -   Sesuaikan koneksi di file `src/Database.php` atau konfigurasi terkait.
 
-3.  **Launch!**
-    Start the built-in PHP server:
+3.  **Jalankan Server**
+    Gunakan built-in server PHP agar instan:
     ```bash
     php -S localhost:8000 -t public
     ```
-    Open `http://localhost:8000` in your browser.
+    Buka browser dan kunjungi: `http://localhost:8000`
 
-4.  **Login Access**
-    - **Admin**: `admin@contoh.com` / `password123`
-    - **User**: `user@contoh.com` / `password123`
+4.  **Akun Demo**
+    -   **Admin**: `admin@contoh.com` / `password123`
+    -   **User**: `user@contoh.com` / `password123`
 
 ---
 
-## 🤝 Contributing
+## 🤝 Kontribusi
 
-Got an idea to make it even cooler?
-1. Fork it.
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`).
-3. Commit your changes.
-4. Push to the branch.
-5. Open a Pull Request.
+Punya ide gila untuk fitur baru? Atau menemukan *bug* kecil? Kami sangat terbuka untuk kolaborasi!
+Jangan ragu untuk *Fork*, *Clone*, dan kirimkan *Pull Request* terbaik Anda.
 
 ---
 
 <center>
-  <p>Made with ❤️ and a lot of ☕ by <b>Rony Risvaldo</b></p>
+  <p>Dibuat dengan ❤️ dan semangat inovasi oleh <b>Rony Risvaldo</b></p>
+  <small>Experience the difference of a well-crafted tool.</small>
 </center>
