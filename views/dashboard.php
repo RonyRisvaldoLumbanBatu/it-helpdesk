@@ -67,13 +67,13 @@
                     <div
                         style="font-size: 0.75rem; text-transform: uppercase; color: rgba(255,255,255,0.4); margin: 1.5rem 0 0.5rem 1rem; font-weight: 600;">
                         Admin Area</div>
-                    <a href="?page=dashboard&action=manage_users" class="nav-item">
+                    <a href="?page=dashboard&action=manage_users" class="nav-item <?php echo (isset($_GET['action']) && $_GET['action'] == 'manage_users') ? 'active' : ''; ?>">
                         <i class="ri-user-settings-line" style="margin-right: 10px; color: #fcd34d;"></i> Kelola User
                     </a>
-                    <a href="?page=dashboard&action=incoming_tickets" class="nav-item">
+                    <a href="?page=dashboard&action=incoming_tickets" class="nav-item <?php echo (isset($_GET['action']) && $_GET['action'] == 'incoming_tickets') ? 'active' : ''; ?>">
                         <i class="ri-inbox-archive-line" style="margin-right: 10px; color: #f87171;"></i> Tiket Masuk
                     </a>
-                    <a href="?page=dashboard&action=reports" class="nav-item">
+                    <a href="?page=dashboard&action=reports" class="nav-item <?php echo (isset($_GET['action']) && $_GET['action'] == 'reports') ? 'active' : ''; ?>">
                         <i class="ri-file-chart-line" style="margin-right: 10px; color: #c084fc;"></i> Laporan
                     </a>
                 <?php endif; ?>
@@ -117,7 +117,7 @@
                             onmouseover="this.style.background='#f8fafc'"
                             onmouseout="this.style.background='transparent'">
                             <img src="<?php echo $avatar; ?>" alt="Profile"
-                                style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex-shrink: 0;">
 
                             <div class="user-details" style="display: flex; flex-direction: column; line-height: 1.2;">
                                 <span
@@ -241,7 +241,7 @@
                                             <td style="padding: 16px 24px;">
                                                 <div style="display: flex; align-items: center;">
                                                     <div
-                                                        style="width: 36px; height: 36px; background: #dbeafe; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #1e40af; font-weight: 700; font-size: 0.9rem; margin-right: 12px; border: 2px solid white; box-shadow: 0 0 0 1px #bfdbfe;">
+                                                        style="width: 36px; height: 36px; background: #dbeafe; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #1e40af; font-weight: 700; font-size: 0.9rem; margin-right: 12px; border: 2px solid white; box-shadow: 0 0 0 1px #bfdbfe; flex-shrink: 0;">
                                                         <?php echo strtoupper(substr($ticket['requester_name'], 0, 1)); ?>
                                                     </div>
                                                     <div>

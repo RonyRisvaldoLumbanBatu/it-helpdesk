@@ -78,9 +78,19 @@ try {
                                 <?php echo date('d M Y, H:i', strtotime($t['created_at'])); ?>
                             </td>
                             <td style="padding: 16px 24px; font-size: 0.9rem;">
-                                <div style="font-weight: 600; color: #1e293b;"><?php echo htmlspecialchars($t['user_name']); ?>
-                                </div>
-                                <div style="font-size: 0.8rem; color: #94a3b8;">@<?php echo htmlspecialchars($t['username']); ?>
+                                <div style="display: flex; align-items: center;">
+                                    <div
+                                        style="width: 36px; height: 36px; background: #e0e7ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #4338ca; font-weight: 700; font-size: 0.9rem; margin-right: 12px; border: 2px solid white; box-shadow: 0 0 0 1px #c7d2fe; flex-shrink: 0;">
+                                        <?php echo strtoupper(substr($t['user_name'], 0, 1)); ?>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 600; color: #1e293b;">
+                                            <?php echo htmlspecialchars($t['user_name']); ?>
+                                        </div>
+                                        <div style="font-size: 0.8rem; color: #94a3b8;">
+                                            @<?php echo htmlspecialchars($t['username']); ?>
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
                             <td style="padding: 16px 24px; font-size: 0.9rem;">
