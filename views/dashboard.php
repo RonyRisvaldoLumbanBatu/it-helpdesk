@@ -31,7 +31,7 @@
                     background: none;
                     border: none;
                     font-size: 1.5rem;
-                    color: #64748b;
+                    color: white;
                     cursor: pointer;
                     padding: 0;
                 }
@@ -200,7 +200,8 @@
         <h3 style="margin: 0; font-size: 1.1rem; color: white; font-weight: 700;">Tiket Terbaru Masuk</h3>
         <a href="?page=dashboard&action=incoming_tickets" style="font-size: 0.85rem; color: white; font-weight: 600; text-decoration: none;">Lihat Semua &rarr;</a>
       </div>';
-
+                        echo '<div style="overflow-x: auto;">'; // Wrapper for horizontal scroll
+                
                         if (count($recentTickets) > 0) {
                             ?>
                             <table style="width: 100%; border-collapse: collapse;">
@@ -286,7 +287,8 @@
                         } else {
                             echo '<div style="padding: 40px; text-align: center; color: #64748b;">Belum ada tiket masuk.</div>';
                         }
-                        echo '</div>'; // End Table Wrapper
+                        echo '</div>'; // End Scroll Wrapper
+                        echo '</div>'; // End Table Card Wrapper
                 
                     } else {
                         // ============================================

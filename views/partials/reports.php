@@ -30,18 +30,21 @@ for ($i = 6; $i >= 0; $i--) {
 }
 ?>
 
-<div style="background: white; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); overflow: hidden; margin-bottom: 30px;">
+<div
+    style="background: white; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); overflow: hidden; margin-bottom: 30px;">
     <!-- Main Card Header -->
     <div style="padding: 20px 24px; background: var(--primary); border-bottom: 1px solid #e2e8f0;">
         <h2 style="margin: 0; font-size: 1.25rem; font-weight: 700; color: white;">Laporan & Statistik</h2>
-        <p style="margin: 4px 0 0 0; color: rgba(255,255,255,0.8); font-size: 0.9rem;">Analisis performa layanan IT Helpdesk dalam 7 hari terakhir.</p>
+        <p style="margin: 4px 0 0 0; color: rgba(255,255,255,0.8); font-size: 0.9rem;">Analisis performa layanan IT
+            Helpdesk dalam 7 hari terakhir.</p>
     </div>
 
     <!-- Main Card Body -->
     <div style="padding: 24px;">
 
         <!-- Charts Grid -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px; margin-bottom: 30px;">
+        <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 30px;">
             <!-- Status Chart Box -->
             <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px;">
                 <div style="padding: 16px 20px; border-bottom: 1px solid #e2e8f0; background: var(--primary);">
@@ -55,7 +58,8 @@ for ($i = 6; $i >= 0; $i--) {
             <!-- Trend Chart Box -->
             <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px;">
                 <div style="padding: 16px 20px; border-bottom: 1px solid #e2e8f0; background: var(--primary);">
-                    <h3 style="margin: 0; font-size: 1rem; font-weight: 600; color: white;">Tren Tiket Masuk (7 Hari)</h3>
+                    <h3 style="margin: 0; font-size: 1rem; font-weight: 600; color: white;">Tren Tiket Masuk (7 Hari)
+                    </h3>
                 </div>
                 <div style="padding: 20px; height: 350px;">
                     <canvas id="trendChart"></canvas>
@@ -71,24 +75,32 @@ for ($i = 6; $i >= 0; $i--) {
             <table style="width: 100%; border-collapse: collapse;">
                 <thead style="background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
                     <tr>
-                        <th style="padding: 12px 20px; text-align: left; font-weight: 600; font-size: 0.85rem; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">Metrik</th>
-                        <th style="padding: 12px 20px; text-align: right; font-weight: 600; font-size: 0.85rem; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">Nilai</th>
+                        <th
+                            style="padding: 12px 20px; text-align: left; font-weight: 600; font-size: 0.85rem; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">
+                            Metrik</th>
+                        <th
+                            style="padding: 12px 20px; text-align: right; font-weight: 600; font-size: 0.85rem; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">
+                            Nilai</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr style="border-bottom: 1px solid #f1f5f9; transition: all 0.2s ease;"
                         onmouseover="this.style.background='#f8fafc'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.05)';"
                         onmouseout="this.style.background='white'; this.style.transform='none'; this.style.boxShadow='none';">
-                        <td style="padding: 16px 20px; color: #334155; font-size: 0.95rem;">Total Tiket (Semua Waktu)</td>
-                        <td style="padding: 16px 20px; font-weight: 700; font-size: 1.1rem; color: #0f172a; text-align: right;">
+                        <td style="padding: 16px 20px; color: #334155; font-size: 0.95rem;">Total Tiket (Semua Waktu)
+                        </td>
+                        <td
+                            style="padding: 16px 20px; font-weight: 700; font-size: 1.1rem; color: #0f172a; text-align: right;">
                             <?php echo array_sum($counts); ?>
                         </td>
                     </tr>
                     <tr style="border-bottom: 1px solid #f1f5f9; transition: all 0.2s ease;"
                         onmouseover="this.style.background='#f8fafc'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.05)';"
                         onmouseout="this.style.background='white'; this.style.transform='none'; this.style.boxShadow='none';">
-                        <td style="padding: 16px 20px; color: #334155; font-size: 0.95rem;">Tingkat Penyelesaian (Resolved / Total)</td>
-                        <td style="padding: 16px 20px; font-weight: 700; color: #15803d; text-align: right; font-size: 1rem;">
+                        <td style="padding: 16px 20px; color: #334155; font-size: 0.95rem;">Tingkat Penyelesaian
+                            (Resolved / Total)</td>
+                        <td
+                            style="padding: 16px 20px; font-weight: 700; color: #15803d; text-align: right; font-size: 1rem;">
                             <?php
                             $total = array_sum($counts);
                             $resolved = $statusData['resolved'] ?? 0;
