@@ -217,7 +217,15 @@ $config = $statusConfig[$ticket['status']] ?? $statusConfig['pending'];
                     <div
                         style="background: <?php echo $config['bg']; ?>; color: <?php echo $config['text']; ?>; border: 1px solid <?php echo $config['border']; ?>; padding: 6px 16px; border-radius: 99px; display: flex; align-items: center; gap: 6px; white-space: nowrap; font-weight: 600; font-size: 0.85rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05); flex-shrink: 0;">
                         <i class="<?php echo $config['icon']; ?>"></i>
-                        <?php echo ucfirst(str_replace('_', ' ', $ticket['status'])); ?>
+                        <?php
+                        $statusLabels = [
+                            'pending' => 'Menunggu',
+                            'in_progress' => 'Diproses',
+                            'resolved' => 'Selesai',
+                            'rejected' => 'Ditolak'
+                        ];
+                        echo $statusLabels[$ticket['status']] ?? $ticket['status'];
+                        ?>
                     </div>
                 </div>
 
@@ -376,9 +384,9 @@ $config = $statusConfig[$ticket['status']] ?? $statusConfig['pending'];
                             <select name="status"
                                 style="appearance: none; background: white; border: 1px solid var(--border); padding: 10px 40px 10px 15px; border-radius: 6px; font-size: 0.95rem; color: var(--text-main); outline: none; cursor: pointer; min-width: 200px;">
                                 <option value="pending" <?php echo ($ticket['status'] == 'pending') ? 'selected' : ''; ?>>🕒
-                                    Pending</option>
+                                    Menunggu</option>
                                 <option value="in_progress" <?php echo ($ticket['status'] == 'in_progress') ? 'selected' : ''; ?>>
-                                    🛠️ Sedang Diproses</option>
+                                    🛠️ Diproses</option>
                                 <option value="resolved" <?php echo ($ticket['status'] == 'resolved') ? 'selected' : ''; ?>>✅
                                     Selesai</option>
                                 <option value="rejected" <?php echo ($ticket['status'] == 'rejected') ? 'selected' : ''; ?>>🚫

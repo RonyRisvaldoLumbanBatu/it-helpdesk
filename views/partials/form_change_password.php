@@ -11,14 +11,18 @@
     <form action="?page=submit_ticket" method="POST">
 
         <div class="form-group mb-4">
-            <label>Email Kantor</label>
+            <label style="display: flex; align-items: center; gap: 8px;">
+                <i class="ri-mail-line" style="color: var(--primary);"></i> Email Kantor
+            </label>
             <input type="email" class="form-control" name="email" required placeholder="nama@perusahaan.com">
             <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">*Gunakan email kantor yang
                 valid</div>
         </div>
 
         <div class="form-group mb-4">
-            <label>Alasan Pengajuan</label>
+            <label style="display: flex; align-items: center; gap: 8px;">
+                <i class="ri-file-text-line" style="color: var(--primary);"></i> Alasan Pengajuan
+            </label>
             <textarea class="form-control" name="reason" rows="3"
                 placeholder="Jelaskan kenapa perlu reset password..."></textarea>
         </div>

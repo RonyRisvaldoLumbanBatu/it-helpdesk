@@ -67,13 +67,16 @@
                     <div
                         style="font-size: 0.75rem; text-transform: uppercase; color: rgba(255,255,255,0.4); margin: 1.5rem 0 0.5rem 1rem; font-weight: 600;">
                         Admin Area</div>
-                    <a href="?page=dashboard&action=manage_users" class="nav-item <?php echo (isset($_GET['action']) && $_GET['action'] == 'manage_users') ? 'active' : ''; ?>">
+                    <a href="?page=dashboard&action=manage_users"
+                        class="nav-item <?php echo (isset($_GET['action']) && $_GET['action'] == 'manage_users') ? 'active' : ''; ?>">
                         <i class="ri-user-settings-line" style="margin-right: 10px; color: #fcd34d;"></i> Kelola User
                     </a>
-                    <a href="?page=dashboard&action=incoming_tickets" class="nav-item <?php echo (isset($_GET['action']) && $_GET['action'] == 'incoming_tickets') ? 'active' : ''; ?>">
+                    <a href="?page=dashboard&action=incoming_tickets"
+                        class="nav-item <?php echo (isset($_GET['action']) && $_GET['action'] == 'incoming_tickets') ? 'active' : ''; ?>">
                         <i class="ri-inbox-archive-line" style="margin-right: 10px; color: #f87171;"></i> Tiket Masuk
                     </a>
-                    <a href="?page=dashboard&action=reports" class="nav-item <?php echo (isset($_GET['action']) && $_GET['action'] == 'reports') ? 'active' : ''; ?>">
+                    <a href="?page=dashboard&action=reports"
+                        class="nav-item <?php echo (isset($_GET['action']) && $_GET['action'] == 'reports') ? 'active' : ''; ?>">
                         <i class="ri-file-chart-line" style="margin-right: 10px; color: #c084fc;"></i> Laporan
                     </a>
                 <?php endif; ?>
@@ -379,16 +382,41 @@
                             $color = $statusColors[$lastTicket['status']] ?? '#64748b';
 
                             echo '<div onclick="window.location.href=\'?page=dashboard&action=ticket_detail&id=' . $lastTicket['id'] . '\'" 
-                                       style="background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: transform 0.2s;"
-                                       onmouseover="this.style.borderColor=\'#cbd5e1\'; this.style.transform=\'translateY(-2px)\'"
-                                       onmouseout="this.style.borderColor=\'#e2e8f0\'; this.style.transform=\'none\'">
-                                    <div>
-                                        <div style="font-weight: 600; color: #1e293b; font-size: 1rem; margin-bottom: 4px;">' . htmlspecialchars($lastTicket['subject']) . '</div>
-                                        <div style="color: #64748b; font-size: 0.85rem;">Updated: ' . date('d M H:i', strtotime($lastTicket['updated_at'])) . '</div>
+                                       style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);"
+                                       onmouseover="this.style.borderColor=\'#cbd5e1\'; this.style.transform=\'translateY(-2px)\'; this.style.boxShadow=\'0 10px 15px -3px rgba(0,0,0,0.1)\'"
+                                       onmouseout="this.style.borderColor=\'#e2e8f0\'; this.style.transform=\'none\'; this.style.boxShadow=\'0 4px 6px -1px rgba(0,0,0,0.05)\'">
+                                    
+                                    <div style="display: flex; align-items: center; gap: 20px;">
+                                        <!-- Status Icon -->
+                                        <!-- Status Icon -->
+                                        <div style="width: 50px; height: 50px; border-radius: 12px; background: ' . $color . '15; display: flex; align-items: center; justify-content: center; color: ' . $color . '; font-size: 1.5rem; border: 1px solid ' . $color . '30; flex-shrink: 0;">
+                                            <i class="' . ($lastTicket['status'] == 'resolved' ? 'ri-checkbox-circle-line' : 'ri-time-line') . '"></i>
+                                        </div>
+                                        
+                                        <div>
+                                            <div style="font-size: 0.85rem; font-weight: 700; color: #64748b; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
+                                                #' . $lastTicket['id'] . ' 
+                                                <span style="width: 4px; height: 4px; background: #cbd5e1; border-radius: 50%;"></span>
+                                                ' . date('d M Y', strtotime($lastTicket['created_at'])) . '
+                                            </div>
+                                            <div style="font-weight: 700; color: #1e293b; font-size: 1.1rem; margin-bottom: 6px;">
+                                                ' . htmlspecialchars($lastTicket['subject']) . '
+                                            </div>
+                                            <div style="font-size: 0.85rem; color: #94a3b8;">
+                                                <i class="ri-history-line" style="vertical-align: middle; margin-right: 4px;"></i> 
+                                                Update terakhir: ' . date('H:i', strtotime($lastTicket['updated_at'])) . '
+                                            </div>
+                                        </div>
                                     </div>
-                                    <span style="background: ' . $color . '20; color: ' . $color . '; padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase;">
-                                        ' . $lastTicket['status'] . '
-                                    </span>
+
+                                    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 12px;">
+                                        <span style="background: ' . $color . '20; color: ' . $color . '; padding: 6px 14px; border-radius: 99px; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; border: 1px solid ' . $color . '30;">
+                                            ' . ($lastTicket['status'] == 'resolved' ? 'Selesai' :
+                                ($lastTicket['status'] == 'pending' ? 'Menunggu' :
+                                    ($lastTicket['status'] == 'in_progress' ? 'Diproses' :
+                                        ($lastTicket['status'] == 'rejected' ? 'Ditolak' : $lastTicket['status'])))) . '
+                                        </span>
+                                    </div>
                                   </div>';
                         } else {
                             echo '<div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 20px; text-align: center; color: #64748b;">
