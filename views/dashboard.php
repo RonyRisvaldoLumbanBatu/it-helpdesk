@@ -202,46 +202,87 @@
       </div>';
 
                         if (count($recentTickets) > 0) {
-                            echo '<table style="width: 100%; border-collapse: collapse;">
-                                    <thead style="background: #f8fafc; color: #64748b; border-bottom: 1px solid #e2e8f0;">
-                                        <tr>
-                                            <th style="padding: 16px 24px; text-align: left; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Subjek</th>
-                                            <th style="padding: 16px 24px; text-align: left; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Pengirim</th>
-                                            <th style="padding: 16px 24px; text-align: left; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Status</th>
-                                            <th style="padding: 16px 24px; text-align: right; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Tanggal</th>
+                            ?>
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <thead style="background: #f8fafc; color: #475569; border-bottom: 1px solid #e2e8f0;">
+                                    <tr>
+                                        <th style="padding: 16px 24px; text-align: left; font-weight: 600; font-size: 0.9rem;">
+                                            Subjek</th>
+                                        <th style="padding: 16px 24px; text-align: left; font-weight: 600; font-size: 0.9rem;">
+                                            Pengirim</th>
+                                        <th style="padding: 16px 24px; text-align: left; font-weight: 600; font-size: 0.9rem;">
+                                            Status</th>
+                                        <th style="padding: 16px 24px; text-align: right; font-weight: 600; font-size: 0.9rem;">
+                                            Tanggal</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="font-size: 0.9rem; color: #334155;">
+                                    <?php foreach ($recentTickets as $ticket): ?>
+                                        <tr style="border-bottom: 1px solid #f1f5f9; transition: all 0.2s ease; cursor: pointer;"
+                                            onclick="window.location.href='?page=dashboard&action=ticket_detail&id=<?php echo $ticket['id']; ?>'"
+                                            onmouseover="this.style.background='#f8fafc'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.05)';"
+                                            onmouseout="this.style.background='white'; this.style.transform='none'; this.style.boxShadow='none';">
+
+                                            <!-- Subjek -->
+                                            <td style="padding: 16px 24px;">
+                                                <div style="font-weight: 600; color: #1e293b; font-size: 0.95rem; margin-bottom: 4px;">
+                                                    <?php echo htmlspecialchars($ticket['subject']); ?>
+                                                </div>
+                                                <div
+                                                    style="font-size: 0.8rem; color: #94a3b8; display: flex; align-items: center; gap: 6px;">
+                                                    <span
+                                                        style="background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-weight: 600; color: #64748b;">#<?php echo $ticket['id']; ?></span>
+                                                    <span>• <?php echo htmlspecialchars($ticket['requester_name']); ?></span>
+                                                </div>
+                                            </td>
+
+                                            <!-- Pengirim -->
+                                            <td style="padding: 16px 24px;">
+                                                <div style="display: flex; align-items: center;">
+                                                    <div
+                                                        style="width: 36px; height: 36px; background: #dbeafe; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #1e40af; font-weight: 700; font-size: 0.9rem; margin-right: 12px; border: 2px solid white; box-shadow: 0 0 0 1px #bfdbfe;">
+                                                        <?php echo strtoupper(substr($ticket['requester_name'], 0, 1)); ?>
+                                                    </div>
+                                                    <div>
+                                                        <div style="font-weight: 500; color: #334155;">
+                                                            <?php echo htmlspecialchars($ticket['requester_name']); ?>
+                                                        </div>
+                                                        <div style="font-size: 0.8rem; color: #94a3b8;">Staff</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            <!-- Status -->
+                                            <td style="padding: 16px 24px;">
+                                                <?php
+                                                $statusColors = [
+                                                    'pending' => ['bg' => '#fff7ed', 'text' => '#c2410c', 'border' => '#ffedd5'],
+                                                    'in_progress' => ['bg' => '#eff6ff', 'text' => '#1d4ed8', 'border' => '#dbeafe'],
+                                                    'resolved' => ['bg' => '#f0fdf4', 'text' => '#15803d', 'border' => '#dcfce7'],
+                                                    'rejected' => ['bg' => '#fef2f2', 'text' => '#b91c1c', 'border' => '#fee2e2']
+                                                ];
+                                                $s = $ticket['status'];
+                                                $color = $statusColors[$s] ?? $statusColors['pending'];
+                                                ?>
+                                                <span
+                                                    style="display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; background: <?php echo $color['bg']; ?>; color: <?php echo $color['text']; ?>; border: 1px solid <?php echo $color['border']; ?>; letter-spacing: 0.5px; text-transform: uppercase;">
+                                                    <span
+                                                        style="width: 6px; height: 6px; background: currentColor; border-radius: 50%; margin-right: 6px;"></span>
+                                                    <?php echo $s; ?>
+                                                </span>
+                                            </td>
+
+                                            <!-- Tanggal -->
+                                            <td style="padding: 16px 24px; text-align: right; white-space: nowrap;">
+                                                <div style="font-size: 0.85rem; color: #64748b; font-weight: 500;">
+                                                    <?php echo date('d M, H:i', strtotime($ticket['created_at'])); ?>
+                                                </div>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody style="font-size: 0.9rem; color: #334155;">';
-
-                            $statusMap = [
-                                'pending' => ['bg' => '#fff7ed', 'text' => '#c2410c', 'label' => 'Pending'],
-                                'in_progress' => ['bg' => '#eff6ff', 'text' => '#1d4ed8', 'label' => 'Proses'],
-                                'resolved' => ['bg' => '#ecfdf5', 'text' => '#047857', 'label' => 'Selesai'],
-                                'rejected' => ['bg' => '#fef2f2', 'text' => '#b91c1c', 'label' => 'Ditolak']
-                            ];
-
-                            foreach ($recentTickets as $ticket) {
-                                $st = $statusMap[$ticket['status']] ?? ['bg' => '#f1f5f9', 'text' => '#64748b', 'label' => $ticket['status']];
-                                echo '<tr style="border-bottom: 1px solid #f1f5f9; cursor: pointer; transition: background 0.1s;" onclick="window.location.href=\'?page=dashboard&action=ticket_detail&id=' . $ticket['id'] . '\'" onmouseover="this.style.background=\'#f8fafc\'" onmouseout="this.style.background=\'transparent\'">
-                                        <td style="padding: 16px 24px; max-width: 300px;">
-                                            <div style="font-weight: 600; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' . htmlspecialchars($ticket['subject']) . '</div>
-                                            <div style="font-size: 0.8rem; color: #94a3b8;">#' . $ticket['id'] . '</div>
-                                        </td>
-                                        <td style="padding: 16px 24px;">
-                                            <div style="display: flex; align-items: center; gap: 8px;">
-                                                <div style="width: 24px; height: 24px; background: #e2e8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; color: #64748b;">' . strtoupper(substr($ticket['requester_name'], 0, 1)) . '</div>
-                                                ' . htmlspecialchars($ticket['requester_name']) . '
-                                            </div>
-                                        </td>
-                                        <td style="padding: 16px 24px;">
-                                            <span style="background: ' . $st['bg'] . '; color: ' . $st['text'] . '; padding: 6px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">' . $st['label'] . '</span>
-                                        </td>
-                                        <td style="padding: 16px 24px; text-align: right; color: #64748b; font-size: 0.85rem;">
-                                            ' . date('d M, H:i', strtotime($ticket['created_at'])) . '
-                                        </td>
-                                      </tr>';
-                            }
-                            echo '</tbody></table>';
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                            <?php
                         } else {
                             echo '<div style="padding: 40px; text-align: center; color: #64748b;">Belum ada tiket masuk.</div>';
                         }
