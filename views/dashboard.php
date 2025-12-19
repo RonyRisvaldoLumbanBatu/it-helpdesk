@@ -151,7 +151,6 @@
             <div class="content-body">
                 <?php
                 if (!isset($content) || $content == 'home') {
-                    echo '<h2>Dashboard ' . ucfirst($currentUser['role']) . '</h2>';
 
                     if ($currentUser['role'] === 'admin') {
                         // LOAD REAL STATS
@@ -161,48 +160,55 @@
                         // 1. Fetch KPI Stats
                         $totalTickets = $pdo->query("SELECT COUNT(*) FROM tickets")->fetchColumn();
                         $countPending = $pdo->query("SELECT COUNT(*) FROM tickets WHERE status = 'pending'")->fetchColumn();
-                        // $countProcess removed as requested
                         $countResolved = $pdo->query("SELECT COUNT(*) FROM tickets WHERE status = 'resolved'")->fetchColumn();
 
                         // 2. Fetch Recent Activities (Latest 5 Tickets)
                         $recentTickets = $pdo->query("SELECT t.*, u.name as requester_name FROM tickets t JOIN users u ON t.user_id = u.id ORDER BY t.created_at DESC LIMIT 5")->fetchAll(PDO::FETCH_ASSOC);
 
-                        // RENDER UI
-                        echo '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; margin-bottom: 30px;">
-                                <!-- Total -->
-                                <div style="background: white; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; border-top: 4px solid #3b82f6; box-shadow: 0 4px 6px rgba(0,0,0,0.02); text-align: center;">
-                                    <div style="font-size: 3rem; font-weight: 700; color: #3b82f6; line-height: 1.2;">' . number_format($totalTickets) . '</div>
-                                    <div style="color: #64748b; font-size: 0.95rem; font-weight: 500;">Total Tiket</div>
+                        // UNIFIED CARD: Title + Stats
+                        echo '<div style="background: white; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 30px; overflow: hidden;">
+                                <div style="padding: 20px 24px; border-bottom: 1px solid #e2e8f0; background: var(--primary);">
+                                    <h2 style="margin: 0; font-size: 1.25rem; color: white; font-weight: 700;">Dashboard ' . ucfirst($currentUser['role']) . '</h2>
                                 </div>
+                                
+                                <div style="padding: 24px;">
+                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px;">
+                                        <!-- Total -->
+                                        <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; border-top: 4px solid #3b82f6; text-align: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                                            <div style="font-size: 2.5rem; font-weight: 700; color: #3b82f6; line-height: 1.2;">' . number_format($totalTickets) . '</div>
+                                            <div style="color: #64748b; font-size: 0.9rem; font-weight: 600;">Total Tiket</div>
+                                        </div>
 
-                                <!-- Pending -->
-                                <div style="background: white; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; border-top: 4px solid #f97316; box-shadow: 0 4px 6px rgba(0,0,0,0.02); text-align: center;">
-                                    <div style="font-size: 3rem; font-weight: 700; color: #f97316; line-height: 1.2;">' . number_format($countPending) . '</div>
-                                    <div style="color: #64748b; font-size: 0.95rem; font-weight: 500;">Menunggu</div>
-                                </div>
+                                        <!-- Pending -->
+                                        <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; border-top: 4px solid #f97316; text-align: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                                            <div style="font-size: 2.5rem; font-weight: 700; color: #f97316; line-height: 1.2;">' . number_format($countPending) . '</div>
+                                            <div style="color: #64748b; font-size: 0.9rem; font-weight: 600;">Menunggu</div>
+                                        </div>
 
-                                <!-- Resolved -->
-                                <div style="background: white; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; border-top: 4px solid #10b981; box-shadow: 0 4px 6px rgba(0,0,0,0.02); text-align: center;">
-                                    <div style="font-size: 3rem; font-weight: 700; color: #10b981; line-height: 1.2;">' . number_format($countResolved) . '</div>
-                                    <div style="color: #64748b; font-size: 0.95rem; font-weight: 500;">Selesai</div>
+                                        <!-- Resolved -->
+                                        <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; border-top: 4px solid #10b981; text-align: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                                            <div style="font-size: 2.5rem; font-weight: 700; color: #10b981; line-height: 1.2;">' . number_format($countResolved) . '</div>
+                                            <div style="color: #64748b; font-size: 0.9rem; font-weight: 600;">Selesai</div>
+                                        </div>
+                                    </div>
                                 </div>
                               </div>';
 
                         // Recent Activity Table
                         echo '<div style="background: white; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">';
-                        echo '<div style="padding: 20px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
-                                <h3 style="margin: 0; font-size: 1.1rem; color: #1e293b;">Tiket Terbaru Masuk</h3>
-                                <a href="?page=dashboard&action=incoming_tickets" style="font-size: 0.85rem; color: var(--primary); font-weight: 600; text-decoration: none;">Lihat Semua &rarr;</a>
-                              </div>';
+                        echo '<div style="padding: 20px; background: var(--primary); border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0; font-size: 1.1rem; color: white; font-weight: 700;">Tiket Terbaru Masuk</h3>
+        <a href="?page=dashboard&action=incoming_tickets" style="font-size: 0.85rem; color: white; font-weight: 600; text-decoration: none;">Lihat Semua &rarr;</a>
+      </div>';
 
                         if (count($recentTickets) > 0) {
                             echo '<table style="width: 100%; border-collapse: collapse;">
-                                    <thead style="background: #f8fafc; color: #64748b; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                                    <thead style="background: #f8fafc; color: #64748b; border-bottom: 1px solid #e2e8f0;">
                                         <tr>
-                                            <th style="padding: 15px 20px; text-align: left; font-weight: 600;">Subjek</th>
-                                            <th style="padding: 15px 20px; text-align: left; font-weight: 600;">Pengirim</th>
-                                            <th style="padding: 15px 20px; text-align: left; font-weight: 600;">Status</th>
-                                            <th style="padding: 15px 20px; text-align: right; font-weight: 600;">Tanggal</th>
+                                            <th style="padding: 16px 24px; text-align: left; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Subjek</th>
+                                            <th style="padding: 16px 24px; text-align: left; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Pengirim</th>
+                                            <th style="padding: 16px 24px; text-align: left; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Status</th>
+                                            <th style="padding: 16px 24px; text-align: right; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Tanggal</th>
                                         </tr>
                                     </thead>
                                     <tbody style="font-size: 0.9rem; color: #334155;">';
@@ -217,20 +223,20 @@
                             foreach ($recentTickets as $ticket) {
                                 $st = $statusMap[$ticket['status']] ?? ['bg' => '#f1f5f9', 'text' => '#64748b', 'label' => $ticket['status']];
                                 echo '<tr style="border-bottom: 1px solid #f1f5f9; cursor: pointer; transition: background 0.1s;" onclick="window.location.href=\'?page=dashboard&action=ticket_detail&id=' . $ticket['id'] . '\'" onmouseover="this.style.background=\'#f8fafc\'" onmouseout="this.style.background=\'transparent\'">
-                                        <td style="padding: 15px 20px; max-width: 300px;">
+                                        <td style="padding: 16px 24px; max-width: 300px;">
                                             <div style="font-weight: 600; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' . htmlspecialchars($ticket['subject']) . '</div>
                                             <div style="font-size: 0.8rem; color: #94a3b8;">#' . $ticket['id'] . '</div>
                                         </td>
-                                        <td style="padding: 15px 20px;">
+                                        <td style="padding: 16px 24px;">
                                             <div style="display: flex; align-items: center; gap: 8px;">
                                                 <div style="width: 24px; height: 24px; background: #e2e8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; color: #64748b;">' . strtoupper(substr($ticket['requester_name'], 0, 1)) . '</div>
                                                 ' . htmlspecialchars($ticket['requester_name']) . '
                                             </div>
                                         </td>
-                                        <td style="padding: 15px 20px;">
-                                            <span style="background: ' . $st['bg'] . '; color: ' . $st['text'] . '; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">' . $st['label'] . '</span>
+                                        <td style="padding: 16px 24px;">
+                                            <span style="background: ' . $st['bg'] . '; color: ' . $st['text'] . '; padding: 6px 12px; border-radius: 99px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">' . $st['label'] . '</span>
                                         </td>
-                                        <td style="padding: 15px 20px; text-align: right; color: #64748b; font-size: 0.85rem;">
+                                        <td style="padding: 16px 24px; text-align: right; color: #64748b; font-size: 0.85rem;">
                                             ' . date('d M, H:i', strtotime($ticket['created_at'])) . '
                                         </td>
                                       </tr>';

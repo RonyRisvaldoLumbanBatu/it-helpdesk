@@ -30,67 +30,87 @@ for ($i = 6; $i >= 0; $i--) {
 }
 ?>
 
-<div style="padding-bottom: 50px;">
-    <div style="margin-bottom: 24px;">
-        <h2 style="font-size: 1.5rem; color: var(--text-main); font-weight: 700;">Laporan & Statistik</h2>
-        <p style="color: var(--text-muted);">Analisis performa layanan IT Helpdesk dalam 7 hari terakhir.</p>
+<div
+    style="background: white; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); overflow: hidden; margin-bottom: 30px;">
+    <!-- Main Card Header -->
+    <div style="padding: 20px 24px; background: var(--primary); border-bottom: 1px solid #e2e8f0;">
+        <h2 style="margin: 0; font-size: 1.25rem; font-weight: 700; color: white;">Laporan & Statistik</h2>
+        <p style="margin: 4px 0 0 0; color: rgba(255,255,255,0.8); font-size: 0.9rem;">Analisis performa layanan IT
+            Helpdesk dalam 7
+            hari terakhir.</p>
     </div>
 
-    <!-- Charts Grid -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px;">
+    <!-- Main Card Body -->
+    <div style="padding: 24px;">
 
-        <!-- Status Chart -->
-        <div style="background: white; border: 1px solid var(--border); border-radius: 12px; padding: 24px;">
-            <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 20px; color: var(--text-main);">Distribusi
-                Status Tiket</h3>
-            <div style="height: 300px; display: flex; justify-content: center;">
-                <canvas id="statusChart"></canvas>
+        <!-- Charts Grid -->
+        <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px; margin-bottom: 30px;">
+            <!-- Status Chart Box -->
+            <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
+                <div style="padding: 16px 20px; border-bottom: 1px solid #e2e8f0; background: var(--primary);">
+                    <h3 style="margin: 0; font-size: 1rem; font-weight: 600; color: white;">Distribusi Status Tiket
+                    </h3>
+                </div>
+                <div style="padding: 20px; display: flex; justify-content: center; height: 350px;">
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Trend Chart Box -->
+            <div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
+                <div style="padding: 16px 20px; border-bottom: 1px solid #e2e8f0; background: var(--primary);">
+                    <h3 style="margin: 0; font-size: 1rem; font-weight: 600; color: white;">Tren Tiket Masuk (7 Hari)
+                    </h3>
+                </div>
+                <div style="padding: 20px; height: 350px;">
+                    <canvas id="trendChart"></canvas>
+                </div>
             </div>
         </div>
 
-        <!-- Trend Chart -->
-        <div style="background: white; border: 1px solid var(--border); border-radius: 12px; padding: 24px;">
-            <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 20px; color: var(--text-main);">Tren Tiket
-                Masuk (7 Hari)</h3>
-            <div style="height: 300px;">
-                <canvas id="trendChart"></canvas>
+        <!-- Summary Table Box -->
+        <div style="border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
+            <div style="padding: 16px 20px; border-bottom: 1px solid #e2e8f0; background: var(--primary);">
+                <h3 style="margin: 0; font-size: 1rem; font-weight: 600; color: white;">Ringkasan Singkat</h3>
             </div>
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead style="background: white; border-bottom: 1px solid #e2e8f0;">
+                    <tr>
+                        <th
+                            style="padding: 12px 20px; text-align: left; font-weight: 600; font-size: 0.85rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">
+                            Metrik</th>
+                        <th
+                            style="padding: 12px 20px; text-align: right; font-weight: 600; font-size: 0.85rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">
+                            Nilai</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 16px 20px; color: #334155; font-size: 0.95rem;">Total Tiket (Semua Waktu)
+                        </td>
+                        <td
+                            style="padding: 16px 20px; font-weight: 700; font-size: 1.1rem; color: #0f172a; text-align: right;">
+                            <?php echo array_sum($counts); ?>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 16px 20px; color: #334155; font-size: 0.95rem;">Tingkat Penyelesaian
+                            (Resolved / Total)</td>
+                        <td
+                            style="padding: 16px 20px; font-weight: 700; color: #15803d; text-align: right; font-size: 1rem;">
+                            <?php
+                            $total = array_sum($counts);
+                            $resolved = $statusData['resolved'] ?? 0;
+                            echo $total > 0 ? round(($resolved / $total) * 100, 1) . '%' : '0%';
+                            ?>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
     </div>
-
-    <!-- Summary Table (Mini) -->
-    <div
-        style="margin-top: 24px; background: white; border: 1px solid var(--border); border-radius: 12px; padding: 24px;">
-        <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 15px; color: var(--text-main);">Ringkasan Singkat
-        </h3>
-        <table style="width: 100%; border-collapse: collapse;">
-            <thead>
-                <tr style="text-align: left; border-bottom: 2px solid #f1f5f9;">
-                    <th style="padding: 12px;">Metrik</th>
-                    <th style="padding: 12px;">Nilai</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr style="border-bottom: 1px solid #f1f5f9;">
-                    <td style="padding: 12px; color: var(--text-muted);">Total Tiket (Semua Waktu)</td>
-                    <td style="padding: 12px; font-weight: bold; font-size: 1.1rem;"><?php echo array_sum($counts); ?>
-                    </td>
-                </tr>
-                <tr style="border-bottom: 1px solid #f1f5f9;">
-                    <td style="padding: 12px; color: var(--text-muted);">Tingkat Penyelesaian (Resolved / Total)</td>
-                    <td style="padding: 12px; font-weight: bold; color: #15803d;">
-                        <?php
-                        $total = array_sum($counts);
-                        $resolved = $statusData['resolved'] ?? 0;
-                        echo $total > 0 ? round(($resolved / $total) * 100, 1) . '%' : '0%';
-                        ?>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
 </div>
 
 <!-- Chart.js Library -->
@@ -99,7 +119,8 @@ for ($i = 6; $i >= 0; $i--) {
 <script>
     // Data from PHP
     const statusLabels = <?php echo json_encode(array_map('ucfirst', array_map(function ($s) {
-        return str_replace('_', ' ', $s); }, $statuses))); ?>;
+        return str_replace('_', ' ', $s);
+    }, $statuses))); ?>;
     const statusData = <?php echo json_encode($counts); ?>;
 
     const dateLabels = <?php echo json_encode($dates); ?>;
