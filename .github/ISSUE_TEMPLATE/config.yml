@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Diskusi
+    url: https://github.com/RonyRisvaldoLumbanBatu/it-helpdesk/discussions
+    about: Diskusi ide, pertanyaan, dan bantuan umum
+  - name: 🛡️ Security Report
+    url: https://github.com/RonyRisvaldoLumbanBatu/it-helpdesk/security/advisories
+    about: Laporkan celah keamanan secara privat
