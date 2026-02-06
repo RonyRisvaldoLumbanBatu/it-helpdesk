@@ -10,7 +10,7 @@
 
 > **Sistem Manajemen Tiket IT yang Dirancang untuk Memberikan Pengalaman Pengguna Luar Biasa**
 
-[Demo](#-demo) • [Fitur](#-fitur-unggulan) • [Instalasi](#-instalasi-cepat) • [Dokumentasi](#-dokumentasi) • [Kontribusi](#-berkontribusi) • [Lisensi](#-lisensi)
+[Demo](#-demo--screenshots) • [Fitur](#-fitur-unggulan) • [Instalasi](#-instalasi-cepat) • [Dokumentasi](#-dokumentasi) • [Kontribusi](#-berkontribusi) • [Lisensi](#-lisensi)
 
 </div>
 
