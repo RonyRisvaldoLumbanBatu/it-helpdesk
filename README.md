@@ -101,22 +101,22 @@ Lihat tampilan aplikasi dalam aksi:
 ### 📊 Dashboard Utama
 Pusat kontrol dengan statistik real-time, daftar tiket terbaru, dan aktivitas tim support.
 
-![Dashboard](docs/images/dashboard-cover.png)
+![Dashboard](https://raw.githubusercontent.com/RonyRisvaldoLumbanBatu/it-helpdesk/main/docs/images/dashboard-cover.png)
 
 ### 🔐 Halaman Login
 Gerbang masuk yang aman, elegan, dan user-friendly dengan dukungan Google Auth.
 
-![Login Screen](docs/images/login-screen.png)
+![Login Screen](https://raw.githubusercontent.com/RonyRisvaldoLumbanBatu/it-helpdesk/main/docs/images/login-screen.png)
 
 ### 💬 Chat Interface - Desktop
 Interface percakapan tiket yang mulus dengan formatting lengkap, sama seperti aplikasi chat modern.
 
-![Desktop Chat](docs/images/desktop-chat.png)
+![Desktop Chat](https://raw.githubusercontent.com/RonyRisvaldoLumbanBatu/it-helpdesk/main/docs/images/desktop-chat.png)
 
 ### 📱 Chat Interface - Mobile
 Responsive design yang sempurna di layar kecil. Produktivitas tanpa kompromi di smartphone.
 
-![Mobile Chat](docs/images/mobile-chat.png)
+![Mobile Chat](https://raw.githubusercontent.com/RonyRisvaldoLumbanBatu/it-helpdesk/main/docs/images/mobile-chat.png)
 
 ### ▶️ Live Demo
 
