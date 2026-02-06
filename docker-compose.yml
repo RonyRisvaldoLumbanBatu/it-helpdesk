@@ -1,32 +1,83 @@
+version: '3.8'
+
 services:
   web:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
     container_name: it-helpdesk-web
-    restart: always
+    restart: unless-stopped
     ports:
       - "7000:80"
     environment:
       - DB_HOST=database
-      - DB_NAME=it_helpdesk
-      - DB_USER=helpdesk_user
-      - DB_PASS=pass123
-    volumes:
-      - ./:/var/www/html
+      - DB_NAME=${DB_NAME:-it_helpdesk}
+      - DB_USER=${DB_USER:-helpdesk_user}
+      - DB_PASS=${DB_PASS:-pass123}
+      - PHP_ENV=production
+    networks:
+      - helpdesk-network
     depends_on:
-      - database
+      database:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    # Uncomment for development (hot reload)
+    # volumes:
+    #   - ./:/var/www/html
 
   database:
     image: mysql:8.0
     container_name: it-helpdesk-db
-    restart: always
+    restart: unless-stopped
     environment:
-      - MYSQL_DATABASE=it_helpdesk
-      - MYSQL_USER=helpdesk_user
-      - MYSQL_PASSWORD=pass123
-      - MYSQL_ROOT_PASSWORD=rootpass123
+      - MYSQL_DATABASE=${DB_NAME:-it_helpdesk}
+      - MYSQL_USER=${DB_USER:-helpdesk_user}
+      - MYSQL_PASSWORD=${DB_PASS:-pass123}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASS:-rootpass123}
+      - MYSQL_CHARSET=utf8mb4
+      - MYSQL_COLLATION=utf8mb4_unicode_ci
     volumes:
-      - ./database/database.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./database/database.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
       - mysql_data:/var/lib/mysql
+    networks:
+      - helpdesk-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASS:-rootpass123}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    # Security: Hanya expose ke internal network
+    # ports:
+    #   - "3306:3306"  # Uncomment jika perlu akses dari luar
+
+networks:
+  helpdesk-network:
+    driver: bridge
 
 volumes:
   mysql_data:
+    driver: local

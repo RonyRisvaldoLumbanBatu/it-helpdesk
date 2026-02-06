@@ -1,14 +1,133 @@
 <?php
 session_start();
-// Simple Router
-$page = $_GET['page'] ?? 'login';
 
-// --- AUTHENTICATION LOGIC ---
-if ($page === 'auth_check' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+// ========================================
+// CSRF PROTECTION FUNCTIONS
+// ========================================
+function generateCsrfToken() {
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['csrf_token'];
+}
+
+function verifyCsrfToken($token) {
+    return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
+}
+
+// Generate CSRF Token untuk halaman ini
+$csrfToken = generateCsrfToken();
+// ========================================
+
+// ========================================
+// ROUTING CONFIGURATION
+// ========================================
+$routes = [
+    // Public Routes (No Auth Required)
+    'login' => [
+        'view' => 'login',
+        'auth' => false,
+        'redirect_if_logged_in' => 'dashboard'
+    ],
+    
+    // Special Handlers (Custom Logic)
+    'auth_check' => [
+        'handler' => 'handleAuthCheck'
+    ],
+    'auth_google' => [
+        'action' => 'auth_google'
+    ],
+    'logout' => [
+        'handler' => 'handleLogout'
+    ],
+    
+    // Protected Routes (Auth Required)
+    'dashboard' => [
+        'view' => 'dashboard',
+        'auth' => true,
+        'handler' => 'handleDashboard'
+    ],
+    
+    // Action Routes (Auth Required)
+    'submit_ticket' => [
+        'action' => 'submit_ticket',
+        'auth' => true
+    ],
+    'update_ticket' => [
+        'action' => 'update_ticket',
+        'auth' => true
+    ],
+    'add_comment' => [
+        'action' => 'add_comment',
+        'auth' => true
+    ],
+    'fetch_comments' => [
+        'action' => 'fetch_comments',
+        'auth' => true
+    ],
+    'api_search' => [
+        'action' => 'api_search',
+        'auth' => true
+    ],
+    'api_notifications' => [
+        'action' => 'api_notifications',
+        'auth' => true
+    ],
+    'create_user' => [
+        'action' => 'create_user',
+        'auth' => true
+    ],
+    'update_user' => [
+        'action' => 'update_user',
+        'auth' => true
+    ],
+    'delete_user' => [
+        'action' => 'delete_user',
+        'auth' => true
+    ]
+];
+
+// ========================================
+// HELPER FUNCTIONS
+// ========================================
+function isAuthenticated() {
+    return isset($_SESSION['user']);
+}
+
+function requireAuth() {
+    if (!isAuthenticated()) {
+        header('Location: ?page=login');
+        exit;
+    }
+}
+
+function view($viewName) {
+    global $csrfToken, $currentUser, $content, $ticket, $comments; // Make variables available to views
+    require_once __DIR__ . '/../views/' . $viewName . '.php';
+}
+
+function loadAction($actionName) {
+    require_once __DIR__ . '/../views/actions/' . $actionName . '.php';
+}
+
+// ========================================
+// ROUTE HANDLERS
+// ========================================
+function handleAuthCheck() {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        header('Location: ?page=login');
+        exit;
+    }
+    
     require_once __DIR__ . '/../src/Database.php';
 
+    // CSRF Token Validation
+    $submittedToken = $_POST['csrf_token'] ?? '';
+    if (!verifyCsrfToken($submittedToken)) {
+        die("Invalid security token. Please try again.");
+    }
+
     $username = $_POST['username'] ?? '';
-    // $passwordInput = $_POST['password'] ?? ''; 
 
     try {
         $pdo = Database::getInstance();
@@ -16,9 +135,8 @@ if ($page === 'auth_check' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute(['username' => $username]);
         $user = $stmt->fetch();
 
-        // Verifikasi password database
         if ($user && password_verify($_POST['password'], $user['password'])) {
-            unset($user['password']); // Hapus hash dari session
+            unset($user['password']);
             $_SESSION['user'] = $user;
             header('Location: ?page=dashboard');
             exit;
@@ -31,127 +149,99 @@ if ($page === 'auth_check' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-if ($page === 'logout') {
+function handleLogout() {
     session_destroy();
     header('Location: ?page=login');
     exit;
 }
-// -----------------------------
 
-function view($viewName)
-{
-    require_once __DIR__ . '/../views/' . $viewName . '.php';
-}
+function handleDashboard() {
+    global $csrfToken, $currentUser, $content, $ticket, $comments;
+    requireAuth();
+    
+    $currentUser = $_SESSION['user'];
+    $content = $_GET['action'] ?? 'home';
+    
+    // Fetch ticket detail if needed
+    if ($content === 'ticket_detail') {
+        $ticketId = $_GET['id'] ?? 0;
+        require_once __DIR__ . '/../src/Database.php';
+        try {
+            $pdo = Database::getInstance();
+            $stmt = $pdo->prepare("
+                SELECT t.*, u.name as requester_name, u.email as requester_email 
+                FROM tickets t 
+                JOIN users u ON t.user_id = u.id 
+                WHERE t.id = :id
+            ");
+            $stmt->execute(['id' => $ticketId]);
+            $ticket = $stmt->fetch(PDO::FETCH_ASSOC);
 
-switch ($page) {
-    case 'login':
-        if (isset($_SESSION['user'])) {
-            header('Location: ?page=dashboard');
-            exit;
-        }
-        view('login');
-        break;
-
-    case 'dashboard':
-        if (!isset($_SESSION['user'])) {
-            header('Location: ?page=login');
-            exit;
-        }
-        $currentUser = $_SESSION['user'];
-        $content = $_GET['action'] ?? 'home';
-        // --- FETCH TICKET DETAIL ---
-        if ($content === 'ticket_detail') {
-            $ticketId = $_GET['id'] ?? 0;
-            require_once __DIR__ . '/../src/Database.php';
-            try {
-                $pdo = Database::getInstance();
-                $stmt = $pdo->prepare("
-                    SELECT t.*, u.name as requester_name, u.email as requester_email 
-                    FROM tickets t 
-                    JOIN users u ON t.user_id = u.id 
-                    WHERE t.id = :id
+            // Access Control
+            if (!$ticket || ($currentUser['role'] !== 'admin' && $ticket['user_id'] != $currentUser['id'])) {
+                $ticket = null;
+                $comments = [];
+            } else {
+                // Fetch Comments
+                $stmtC = $pdo->prepare("
+                    SELECT c.*, u.name as user_name, u.role as user_role 
+                    FROM ticket_comments c 
+                    JOIN users u ON c.user_id = u.id 
+                    WHERE c.ticket_id = :tid 
+                    ORDER BY c.created_at ASC
                 ");
-                $stmt->execute(['id' => $ticketId]);
-                $ticket = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                // Access Control
-                if (!$ticket || ($currentUser['role'] !== 'admin' && $ticket['user_id'] != $currentUser['id'])) {
-                    $ticket = null; // Access denied / Not found
-                    $comments = [];
-                } else {
-                    // Fetch Comments
-                    $stmtC = $pdo->prepare("
-                        SELECT c.*, u.name as user_name, u.role as user_role 
-                        FROM ticket_comments c 
-                        JOIN users u ON c.user_id = u.id 
-                        WHERE c.ticket_id = :tid 
-                        ORDER BY c.created_at ASC
-                    ");
-                    $stmtC->execute(['tid' => $ticketId]);
-                    $comments = $stmtC->fetchAll(PDO::FETCH_ASSOC);
-                }
-            } catch (Exception $e) {
-                die("Error: " . $e->getMessage());
+                $stmtC->execute(['tid' => $ticketId]);
+                $comments = $stmtC->fetchAll(PDO::FETCH_ASSOC);
             }
+        } catch (Exception $e) {
+            die("Error: " . $e->getMessage());
         }
-        // ---------------------------
-
-        require_once __DIR__ . '/../views/dashboard.php';
-        break;
-
-    case 'submit_ticket':
-        require_once __DIR__ . '/../views/actions/submit_ticket.php';
-        break;
-
-    case 'update_ticket':
-        require_once __DIR__ . '/../views/actions/update_ticket.php';
-        break;
-
-
-
-    case 'add_comment':
-        require_once __DIR__ . '/../views/actions/add_comment.php';
-        break;
-
-    case 'fetch_comments':
-        if (!isset($_SESSION['user']))
-            exit; // Security check
-        require_once __DIR__ . '/../views/actions/fetch_comments.php';
-        break;
-
-    case 'api_search':
-        if (!isset($_SESSION['user']))
-            exit;
-        require_once __DIR__ . '/../views/actions/api_search.php';
-        break;
-
-    case 'api_notifications':
-        if (!isset($_SESSION['user']))
-            exit;
-        require_once __DIR__ . '/../views/actions/api_notifications.php';
-        break;
-
-    case 'create_user':
-        require_once __DIR__ . '/../views/actions/create_user.php';
-        break;
-
-    case 'update_user':
-        require_once __DIR__ . '/../views/actions/update_user.php';
-        break;
-
-    case 'delete_user':
-        require_once __DIR__ . '/../views/actions/delete_user.php';
-        break;
-
-    case 'auth_google':
-        require_once __DIR__ . '/../views/actions/auth_google.php';
-        break;
-
-
-
-
-    default:
-        view('login');
-        break;
+    } else {
+        // Initialize empty untuk view lain
+        $ticket = null;
+        $comments = [];
+    }
+    
+    view('dashboard');
 }
+
+// ========================================
+// ROUTING DISPATCHER
+// ========================================
+$page = $_GET['page'] ?? 'login';
+
+// Check if route exists
+if (!isset($routes[$page])) {
+    $page = 'login'; // Default fallback
+}
+
+$route = $routes[$page];
+
+// Check authentication requirement
+if (isset($route['auth']) && $route['auth'] === true) {
+    requireAuth();
+}
+
+// Redirect if already logged in (for login page)
+if (isset($route['redirect_if_logged_in']) && isAuthenticated()) {
+    header('Location: ?page=' . $route['redirect_if_logged_in']);
+    exit;
+}
+
+// Execute route
+if (isset($route['handler'])) {
+    // Custom handler function
+    $handlerFunction = $route['handler'];
+    $handlerFunction();
+} elseif (isset($route['action'])) {
+    // Load action file
+    loadAction($route['action']);
+} elseif (isset($route['view'])) {
+    // Load view file
+    view($route['view']);
+} else {
+    // Fallback
+    view('login');
+}
+
 

@@ -115,6 +115,7 @@ try {
                             <?php if (isset($_SESSION['user']) && $u['id'] != $_SESSION['user']['id']): ?>
                                 <form action="?page=delete_user" method="POST" style="display:inline;"
                                     onsubmit="return confirm('Apakah Anda yakin ingin menghapus user ini? \nPERINGATAN: Semua tiket dan data terkait user ini akan DIHAPUS PERMANEN!');">
+                                    <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
                                     <input type="hidden" name="user_id" value="<?php echo $u['id']; ?>">
                                     <button type="submit"
                                         style="width: 36px; height: 36px; border-radius: 50%; border: none; background: #fef2f2; color: #ef4444; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; margin-left: 8px; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05);"
@@ -149,6 +150,8 @@ try {
         </div>
 
         <form action="?page=create_user" method="POST" style="padding: 24px;">
+            <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
+            
             <div class="form-group mb-4">
                 <label
                     style="display: block; margin-bottom: 8px; font-weight: 600; color: #334155; font-size: 0.9rem;">Nama
@@ -217,6 +220,7 @@ try {
         </div>
 
         <form action="?page=update_user" method="POST" style="padding: 24px;">
+            <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
             <input type="hidden" name="user_id" id="edit_user_id">
 
             <div class="form-group mb-4">

@@ -345,6 +345,7 @@ $config = $statusConfig[$ticket['status']] ?? $statusConfig['pending'];
                     <?php if ($ticket['status'] !== 'resolved' && $ticket['status'] !== 'rejected'): ?>
                         <form action="?page=add_comment" method="POST"
                             style="background: #fff; border: 1px solid var(--border); padding: 15px; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);">
+                            <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
                             <input type="hidden" name="ticket_id" value="<?php echo $ticket['id']; ?>">
 
                             <label
@@ -378,6 +379,7 @@ $config = $statusConfig[$ticket['status']] ?? $statusConfig['pending'];
                         Update Status Tiket</h4>
                     <form action="?page=update_ticket" method="POST"
                         style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                        <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
                         <input type="hidden" name="ticket_id" value="<?php echo $ticket['id']; ?>">
 
                         <div style="position: relative;">

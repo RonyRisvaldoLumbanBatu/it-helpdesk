@@ -1,0 +1,57 @@
+# Git
+.git/
+.github/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Dependencies (if using composer in future)
+/vendor/
+composer.lock
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+
+# Documentation (not needed in container)
+docs/
+*.md
+!README.md
+
+# Deployment files
+docker-compose.yml
+Dockerfile
+.dockerignore
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.zip
+
+# Database dumps (already in database/ folder)
+*.sql.gz
+
+# Node modules (if any)
+node_modules/
+package-lock.json

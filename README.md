@@ -66,31 +66,116 @@ Kami percaya pada kekuatan kesederhanaan. Tanpa framework berat, tanpa *bloatwar
 
 ---
 
-## ⚙️ Cara Instalasi (Coba Sekarang!)
+## ⚙️ Cara Instalasi
 
-Penasaran ingin mencobanya di komputer Anda? Ikuti langkah mudah ini:
+Pilih metode instalasi yang sesuai dengan kebutuhan Anda:
 
-1.  **Clone Repository Ini**
-    ```bash
-    git clone https://github.com/RonyRisvaldoLumbanBatu/it-helpdesk.git
-    cd it-helpdesk
-    ```
+### 🐳 **Opsi 1: Deployment dengan Docker (Recommended)**
 
-2.  **Siapkan Database**
-    -   Buat database baru di MySQL (misal: `db_helpdesk`).
-    -   Import file SQL yang sudah kami sediakan: `database/db_helpdesk.sql`.
-    -   Sesuaikan koneksi di file `src/Database.php` atau konfigurasi terkait.
+Cara tercepat dan termudah untuk deploy aplikasi. Semua dependency dan database otomatis ter-setup!
 
-3.  **Jalankan Server**
-    Gunakan built-in server PHP agar instan:
-    ```bash
-    php -S localhost:8000 -t public
-    ```
-    Buka browser dan kunjungi: `http://localhost:8000`
+**Prerequisites:**
+- Docker & Docker Compose ter-install
 
-4.  **Akun Demo**
-    -   **Admin**: `admin@contoh.com` / `password123`
-    -   **User**: `user@contoh.com` / `password123`
+**Langkah-langkah:**
+
+1. **Clone Repository**
+   ```bash
+   git clone https://github.com/RonyRisvaldoLumbanBatu/it-helpdesk.git
+   cd it-helpdesk
+   ```
+
+2. **Deploy dengan Satu Command!**
+   ```bash
+   docker-compose up -d --build
+   ```
+
+3. **Akses Aplikasi**
+   Buka browser dan kunjungi: `http://localhost:7000`
+   
+   Database otomatis dibuat dengan semua tabel yang diperlukan! ✅
+
+4. **Management Commands**
+   ```bash
+   # Lihat status containers
+   docker-compose ps
+   
+   # Lihat logs
+   docker-compose logs -f
+   
+   # Stop aplikasi
+   docker-compose down
+   
+   # Restart
+   docker-compose restart
+   ```
+
+**Features Docker Setup:**
+- ✅ Multi-stage build (image lebih kecil)
+- ✅ OPcache enabled (performance boost)
+- ✅ Security headers (production-ready)
+- ✅ Health checks (auto-restart jika error)
+- ✅ Resource limits (CPU & Memory)
+- ✅ Network isolation
+- ✅ MySQL 8.0 dengan UTF8MB4
+
+---
+
+### 💻 **Opsi 2: Local Development (Manual Setup)**
+
+Untuk development lokal tanpa Docker.
+
+**Prerequisites:**
+- PHP 8.2+ ter-install
+- MySQL/MariaDB ter-install
+- Web server (Apache/Nginx) atau PHP built-in server
+
+**Langkah-langkah:**
+
+1. **Clone Repository**
+   ```bash
+   git clone https://github.com/RonyRisvaldoLumbanBatu/it-helpdesk.git
+   cd it-helpdesk
+   ```
+
+2. **Siapkan Database**
+   - Buat database baru di MySQL:
+     ```sql
+     CREATE DATABASE it_helpdesk CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+     ```
+   - Import file SQL:
+     ```bash
+     mysql -u root -p it_helpdesk < database/database.sql
+     ```
+
+3. **Konfigurasi Database**
+   Edit file `config/database.php` sesuaikan dengan setup MySQL Anda:
+   ```php
+   'host' => 'localhost',
+   'database' => 'it_helpdesk',
+   'username' => 'root',
+   'password' => 'your_password'
+   ```
+
+4. **Jalankan Server**
+   ```bash
+   php -S localhost:8000 -t public
+   ```
+   Buka browser: `http://localhost:8000`
+
+---
+
+### 🔐 **Akun Demo / Default Login**
+
+Setelah instalasi, gunakan kredensial berikut untuk login:
+
+| Role | Username | Password |
+|------|----------|----------|
+| **Admin** | `admin` | `admin123` |
+| **Staff** | `staff` | `staff123` |
+| **User** | `user` | `user123` |
+
+⚠️ **PENTING**: Segera ganti password default setelah login pertama kali!
 
 ---
 

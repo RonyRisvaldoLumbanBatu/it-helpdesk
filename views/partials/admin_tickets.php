@@ -135,6 +135,7 @@ try {
                                         <!-- Tombol Selesai -->
                                         <form action="?page=update_ticket" method="POST"
                                             onsubmit="return confirm('Tandai tiket ini sebagai Selesai?');">
+                                            <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
                                             <input type="hidden" name="ticket_id" value="<?php echo $t['id']; ?>">
                                             <input type="hidden" name="status" value="resolved">
                                             <button type="submit"
@@ -149,6 +150,7 @@ try {
                                         <!-- Tombol Tolak -->
                                         <form action="?page=update_ticket" method="POST"
                                             onsubmit="return confirm('Tolak tiket ini?');">
+                                            <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
                                             <input type="hidden" name="ticket_id" value="<?php echo $t['id']; ?>">
                                             <input type="hidden" name="status" value="rejected">
                                             <button type="submit"

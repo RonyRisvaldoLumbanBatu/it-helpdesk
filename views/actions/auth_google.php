@@ -3,6 +3,11 @@
 require_once __DIR__ . '/../../src/Database.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['credential'])) {
+    // CSRF Token Validation
+    if (!isset($_SESSION['csrf_token']) || !isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        die("Invalid security token. Please try again.");
+    }
+
     $jwt = $_POST['credential'];
 
     // Verifikasi Token ke Google (Tanpa Library Berat)

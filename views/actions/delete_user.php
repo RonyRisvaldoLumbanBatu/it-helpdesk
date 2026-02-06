@@ -2,6 +2,11 @@
 // ACTION: Delete User
 require_once __DIR__ . '/../../src/Database.php';
 
+// CSRF Token Validation
+if (!isset($_SESSION['csrf_token']) || !isset($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+    die("Invalid security token. Please try again.");
+}
+
 // Cek sesi dan role
 if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
     die("Akses Ditolak!");

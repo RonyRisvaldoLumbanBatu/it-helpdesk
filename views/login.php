@@ -110,6 +110,8 @@
 
 
             <form action="?page=auth_check" method="POST">
+                <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
+                
                 <div class="form-group mb-4">
                     <label>Username</label>
                     <input type="text" class="form-control" name="username" placeholder="Masukkan ID Anda" required>
@@ -157,7 +159,13 @@
             hiddenField.name = 'credential';
             hiddenField.value = response.credential;
 
+            const csrfField = document.createElement('input');
+            csrfField.type = 'hidden';
+            csrfField.name = 'csrf_token';
+            csrfField.value = '<?php echo $csrfToken; ?>';
+
             form.appendChild(hiddenField);
+            form.appendChild(csrfField);
             document.body.appendChild(form);
             form.submit();
         }

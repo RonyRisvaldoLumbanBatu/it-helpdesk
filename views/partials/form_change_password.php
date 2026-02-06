@@ -9,6 +9,7 @@
     <?php endif; ?>
 
     <form action="?page=submit_ticket" method="POST">
+        <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
 
         <div class="form-group mb-4">
             <label style="display: flex; align-items: center; gap: 8px;">
