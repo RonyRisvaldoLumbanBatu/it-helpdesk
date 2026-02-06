@@ -94,7 +94,55 @@ Kami percaya bahwa sistem internal juga harus **indah, cepat, dan menyenangkan d
 
 ---
 
-## 🚀 Instalasi Cepat
+## 🎬 Demo & Screenshots
+
+Lihat tampilan aplikasi dalam aksi:
+
+### 📊 Dashboard Utama
+Pusat kontrol dengan statistik real-time, daftar tiket terbaru, dan aktivitas tim support.
+
+![Dashboard](docs/images/dashboard-cover.png)
+
+### 🔐 Halaman Login
+Gerbang masuk yang aman, elegan, dan user-friendly dengan dukungan Google Auth.
+
+![Login Screen](docs/images/login-screen.png)
+
+### 💬 Chat Interface - Desktop
+Interface percakapan tiket yang mulus dengan formatting lengkap, sama seperti aplikasi chat modern.
+
+![Desktop Chat](docs/images/desktop-chat.png)
+
+### 📱 Chat Interface - Mobile
+Responsive design yang sempurna di layar kecil. Produktivitas tanpa kompromi di smartphone.
+
+![Mobile Chat](docs/images/mobile-chat.png)
+
+### ▶️ Live Demo
+
+Ingin mencoba langsung? Dua cara:
+
+**Opsi A: Deploy dengan Docker (Tercepat)**
+```bash
+git clone https://github.com/RonyRisvaldoLumbanBatu/it-helpdesk.git
+cd it-helpdesk
+docker-compose up -d --build
+# Akses: http://localhost:7000
+```
+
+**Opsi B: Local Development**
+```bash
+git clone https://github.com/RonyRisvaldoLumbanBatu/it-helpdesk.git
+cd it-helpdesk
+php -S localhost:8000 -t public
+# Akses: http://localhost:8000
+```
+
+**Login Credentials:**
+- Username: `admin` atau `user`
+- Password: `password123`
+
+---
 
 ### Opsi 1: Docker (Recommended ⭐)
 
