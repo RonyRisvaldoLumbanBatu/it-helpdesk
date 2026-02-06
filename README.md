@@ -169,14 +169,15 @@ Untuk development lokal tanpa Docker.
 
 Setelah instalasi, gunakan kredensial berikut untuk login:
 
-| Role | Username | Password |
-|------|----------|----------|
-| **Admin** | `admin` | `password123` |
+| Role | Username | Password | Status |
+|------|----------|----------|--------|
+| **Admin** | `admin` | `password123` | ✅ Ada |
+| **User** | `user` | `password123` | ✅ Ada |
+| **Staff** | - | - | ❌ Tidak ada |
 
 ⚠️ **CATATAN**: 
-- Hanya akun **Admin** yang tersedia secara default
-- Akun **User** dan **Staff** tidak ada di database awal
-- Admin dapat membuat akun User/Staff melalui halaman **Kelola Pengguna**
+- Akun **Admin** dan **User** sudah tersedia secara default
+- Akun **Staff** TIDAK ada di database awal - Admin dapat membuatnya melalui halaman **Kelola Pengguna**
 - **SANGAT PENTING**: Segera ganti password default setelah login pertama kali!
 
 ---
