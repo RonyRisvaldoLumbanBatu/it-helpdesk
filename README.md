@@ -171,11 +171,13 @@ Setelah instalasi, gunakan kredensial berikut untuk login:
 
 | Role | Username | Password |
 |------|----------|----------|
-| **Admin** | `admin` | `admin123` |
-| **Staff** | `staff` | `staff123` |
-| **User** | `user` | `user123` |
+| **Admin** | `admin` | `password123` |
 
-⚠️ **PENTING**: Segera ganti password default setelah login pertama kali!
+⚠️ **CATATAN**: 
+- Hanya akun **Admin** yang tersedia secara default
+- Akun **User** dan **Staff** tidak ada di database awal
+- Admin dapat membuat akun User/Staff melalui halaman **Kelola Pengguna**
+- **SANGAT PENTING**: Segera ganti password default setelah login pertama kali!
 
 ---
 
