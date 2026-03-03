@@ -1,0 +1,22 @@
+User-agent: *
+# Allow the public login page
+Allow: /$
+Allow: /?page=login
+
+# Disallow authenticated and action routes
+Disallow: /?page=dashboard
+Disallow: /?page=auth_check
+Disallow: /?page=auth_google
+Disallow: /?page=logout
+Disallow: /?page=submit_ticket
+Disallow: /?page=update_ticket
+Disallow: /?page=add_comment
+Disallow: /?page=fetch_comments
+Disallow: /?page=api_search
+Disallow: /?page=api_notifications
+Disallow: /?page=create_user
+Disallow: /?page=update_user
+Disallow: /?page=delete_user
+
+# Sitemap location (update with your production domain)
+Sitemap: https://your-domain.com/sitemap.xml
