@@ -1,3 +1,11 @@
+<?php
+// Build sanitized absolute base URL for SEO tags
+$_seoScheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+$_seoHost   = preg_replace('/[^a-zA-Z0-9\-\.:]/', '', $_SERVER['HTTP_HOST']);
+$_seoBase   = $_seoScheme . '://' . $_seoHost . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
+$_seoCanonical = htmlspecialchars($_seoBase . '/');
+$_seoLogoUrl   = htmlspecialchars($_seoBase . '/assets/images/logo.png');
+?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -5,7 +13,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - IT Helpdesk</title>
+    <meta name="description" content="IT Helpdesk Premium System — platform manajemen tiket IT modern untuk tim support. Kelola permintaan teknis dengan cepat, aman, dan efisien.">
+    <meta name="keywords" content="IT helpdesk, tiket IT, manajemen tiket, support IT, sistem helpdesk, IT support, ticketing system">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Rony Risvaldo Lumban Batu">
+    <meta name="theme-color" content="#1e293b">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="IT Helpdesk Premium System">
+    <meta property="og:description" content="Platform manajemen tiket IT modern untuk tim support. Kelola permintaan teknis dengan cepat, aman, dan efisien.">
+    <meta property="og:image" content="<?php echo $_seoLogoUrl; ?>">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="IT Helpdesk Premium System">
+    <meta name="twitter:description" content="Platform manajemen tiket IT modern untuk tim support. Kelola permintaan teknis dengan cepat, aman, dan efisien.">
+    <meta name="twitter:image" content="<?php echo $_seoLogoUrl; ?>">
+
     <link rel="icon" href="assets/images/logo.png" type="image/png">
+    <link rel="canonical" href="<?php echo $_seoCanonical; ?>">
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
