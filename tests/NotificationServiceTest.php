@@ -20,7 +20,7 @@ final class NotificationServiceTest extends TestCase
                 title TEXT NOT NULL,
                 message TEXT NOT NULL,
                 link TEXT NOT NULL,
-                type TEXT NOT NULL DEFAULT "info",
+                type TEXT NOT NULL DEFAULT ''info'',
                 is_read INTEGER NOT NULL DEFAULT 0,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )'
