@@ -30,7 +30,7 @@ final class ValidationHelperTest extends TestCase
         $result = ValidationHelper::validateEmail($email);
 
         $this->assertFalse($result['valid']);
-        $this->assertSame('Format email tidak valid', $result['error']);
+        $this->assertSame('Email terlalu panjang (maksimal 254 karakter)', $result['error']);
     }
 
     public function testValidateEmailAcceptsValidAddress(): void
