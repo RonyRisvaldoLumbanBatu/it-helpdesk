@@ -4,7 +4,6 @@ Thumbs.db
 
 # PHP/Composer
 /vendor/
-composer.lock
 
 # Environment variables (Sensitive data)
 .env
@@ -18,3 +17,6 @@ composer.lock
 # Logs
 error_log
 logs/
+
+# Test artifacts
+.phpunit.result.cache

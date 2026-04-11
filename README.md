@@ -360,10 +360,15 @@ DB_NAME=it_helpdesk
 ### Running Tests Lokal
 
 ```bash
-# Development server
+composer install
+composer test
+```
+
+### Development Server
+
+```bash
 php -S localhost:8000 -t public
 
-# Docker development
 docker-compose up -d
 # Akses: http://localhost:7000
 ```
