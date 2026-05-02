@@ -1,16 +1,19 @@
-# 🎫 IT Helpdesk Premium System
+# 🎫 IT Helpdesk Premium System — Sistem Tiket Open Source PHP & MySQL
 
 <div align="center">
 
+[![CI/CD](https://github.com/RonyRisvaldoLumbanBatu/it-helpdesk/actions/workflows/ci.yml/badge.svg)](https://github.com/RonyRisvaldoLumbanBatu/it-helpdesk/actions/workflows/ci.yml)
 [![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0+-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
 [![Docker](https://img.shields.io/badge/Docker-Supported-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Production%20Ready-success?style=for-the-badge)](#-deployment-production)
 
-> **Sistem Manajemen Tiket IT yang Dirancang untuk Memberikan Pengalaman Pengguna Luar Biasa**
+> **Aplikasi helpdesk open source berbahasa Indonesia untuk manajemen tiket IT, dukungan pengguna, dan ticketing system internal — dibangun dengan PHP 8.2, MySQL, dan Docker.**
 
 [Demo](#-demo--screenshots) • [Fitur](#-fitur-unggulan) • [Instalasi](#-instalasi-cepat) • [Dokumentasi](#-dokumentasi) • [Kontribusi](#-berkontribusi) • [Lisensi](#-lisensi)
+
+**Kata kunci:** helpdesk PHP · ticketing system Indonesia · IT support open source · sistem tiket kampus · helpdesk Docker · contoh aplikasi PHP MySQL · helpdesk UI modern
 
 </div>
 
@@ -300,8 +303,45 @@ $routes = [
 | Input Validation | Email RFC 5321, Username alphanumeric 3-30 chars, Password min 8 char |
 | SQL Injection Prevention | Prepared statements di semua query |
 | Password Security | BCRYPT hashing dengan cost 12 |
-| Session Management | Secure session handling dengan timeout |
-| HTML Injection Prevention | HTML entity encoding di output |
+| Session Management | `session_regenerate_id()` setelah login sukses |
+| HTML Injection Prevention | HTML entity encoding via helper `e()` & `htmlspecialchars()` |
+| Brute-force Protection | `LoginRateLimiter` (default 5 percobaan / 15 menit per username+IP) |
+
+---
+
+## 🧪 Pengembangan & Quality Gates
+
+Project ini dilengkapi tooling untuk menjaga kualitas kode:
+
+```bash
+# Instalasi dependency dev (sekali saja)
+composer install
+
+# Jalankan unit test
+composer test
+
+# Static analysis (PHPStan level 5)
+composer stan
+
+# Cek code style (PSR-12)
+composer cs-check
+
+# Auto-fix code style
+composer cs-fix
+
+# Jalankan semua quality gate (CI lokal)
+composer ci
+```
+
+**File konfigurasi yang terkait:**
+
+- `composer.json` — autoloader (classmap `src/` + helper global) & script CI
+- `phpunit.xml` — konfigurasi test suite
+- `phpstan.neon` — static analysis level 5
+- `.php-cs-fixer.dist.php` — formatter PSR-12
+- `.editorconfig` — konsistensi editor
+- `.github/workflows/ci.yml` — pipeline GitHub Actions (lint → CS-Fixer → PHPStan → PHPUnit → Docker smoke test)
+- `.github/dependabot.yml` — auto-update dependency mingguan
 
 ---
 
