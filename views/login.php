@@ -31,9 +31,9 @@ $_seoLogoUrl   = htmlspecialchars($_seoBase . '/assets/images/logo.png');
     <meta name="twitter:description" content="Platform manajemen tiket IT modern untuk tim support. Kelola permintaan teknis dengan cepat, aman, dan efisien.">
     <meta name="twitter:image" content="<?php echo $_seoLogoUrl; ?>">
 
-    <link rel="icon" href="assets/images/logo.png" type="image/png">
+    <link rel="icon" href="<?php echo htmlspecialchars(asset('assets/images/logo.png'), ENT_QUOTES, 'UTF-8'); ?>" type="image/png">
     <link rel="canonical" href="<?php echo $_seoCanonical; ?>">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo htmlspecialchars(asset('assets/css/style.css'), ENT_QUOTES, 'UTF-8'); ?>">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         body {
@@ -125,10 +125,15 @@ $_seoLogoUrl   = htmlspecialchars($_seoBase . '/assets/images/logo.png');
             <?php if (isset($_GET['error'])): ?>
                 <div class="error-msg">
                     <?php
-                    if ($_GET['error'] == 'google_domain')
-                        echo "Gunakan email kampus (@satyaterrabhinneka.ac.id)!";
-                    else
-                        echo "Username atau Password salah!";
+                    $errorCode = $_GET['error'];
+                    if ($errorCode == 'google_domain') {
+                        echo 'Gunakan email kampus (@satyaterrabhinneka.ac.id)!';
+                    } elseif ($errorCode == 'locked') {
+                        $wait = (int) ($_GET['wait'] ?? 15);
+                        echo 'Terlalu banyak percobaan login gagal. Coba lagi dalam ' . $wait . ' menit.';
+                    } else {
+                        echo 'Username atau Password salah!';
+                    }
                     ?>
                 </div>
             <?php endif; ?>

@@ -2,6 +2,19 @@
 session_start();
 
 // ========================================
+// COMPOSER AUTOLOADER (opsional)
+// ========================================
+// Bila vendor/ tersedia (mis. setelah `composer install`), pakai autoload-nya
+// untuk classmap src/ + helper global (`e()`, `asset()`). Jika belum, fallback
+// ke require_once manual seperti sebelumnya — aplikasi tetap berjalan.
+$_autoload = __DIR__ . '/../vendor/autoload.php';
+if (is_file($_autoload)) {
+    require_once $_autoload;
+} else {
+    require_once __DIR__ . '/../src/helpers.php';
+}
+
+// ========================================
 // CSRF PROTECTION FUNCTIONS
 // ========================================
 function generateCsrfToken() {
@@ -118,8 +131,9 @@ function handleAuthCheck() {
         header('Location: ?page=login');
         exit;
     }
-    
+
     require_once __DIR__ . '/../src/Database.php';
+    require_once __DIR__ . '/../src/LoginRateLimiter.php';
 
     // CSRF Token Validation
     $submittedToken = $_POST['csrf_token'] ?? '';
@@ -127,20 +141,37 @@ function handleAuthCheck() {
         die("Invalid security token. Please try again.");
     }
 
-    $username = $_POST['username'] ?? '';
+    $username = trim((string) ($_POST['username'] ?? ''));
+    $password = (string) ($_POST['password'] ?? '');
+    $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+
+    // Rate limiting: konfigurasi via env, default 5 percobaan / 15 menit.
+    $maxAttempts = (int) (getenv('LOGIN_MAX_ATTEMPTS') ?: 5);
+    $windowSeconds = (int) (getenv('LOGIN_LOCKOUT_SECONDS') ?: 900);
 
     try {
         $pdo = Database::getInstance();
+        $limiter = new LoginRateLimiter($pdo, $maxAttempts, $windowSeconds);
+
+        if ($limiter->isLocked($username, $ip)) {
+            $waitMinutes = (int) ceil($limiter->secondsUntilUnlock($username, $ip) / 60);
+            header('Location: ?page=login&error=locked&wait=' . $waitMinutes);
+            exit;
+        }
+
         $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username LIMIT 1");
         $stmt->execute(['username' => $username]);
         $user = $stmt->fetch();
 
-        if ($user && password_verify($_POST['password'], $user['password'])) {
+        if ($user && password_verify($password, $user['password'])) {
+            $limiter->recordSuccess($username, $ip);
             unset($user['password']);
             $_SESSION['user'] = $user;
+            session_regenerate_id(true);
             header('Location: ?page=dashboard');
             exit;
         } else {
+            $limiter->recordFailure($username, $ip);
             header('Location: ?page=login&error=1');
             exit;
         }
