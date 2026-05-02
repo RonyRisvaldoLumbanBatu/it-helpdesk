@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "Jika Anda memakai project ini dalam riset, dokumentasi, atau publikasi, mohon kutip dengan metadata berikut."
+title: "IT Helpdesk Premium System"
+abstract: "Aplikasi helpdesk open source berbasis PHP 8.2, MySQL, dan Docker untuk manajemen tiket IT, dukungan pengguna, dan ticketing system internal. Mendukung chat realtime, role-based access control, CSRF protection, rate limiting, dan UI mobile-friendly."
+type: software
+authors:
+  - family-names: "Lumban Batu"
+    given-names: "Rony Risvaldo"
+    affiliation: "Universitas Satya Terra Bhinneka"
+repository-code: "https://github.com/RonyRisvaldoLumbanBatu/it-helpdesk"
+url: "https://github.com/RonyRisvaldoLumbanBatu/it-helpdesk"
+license: MIT
+keywords:
+  - helpdesk
+  - ticketing-system
+  - it-support
+  - customer-support
+  - php
+  - mysql
+  - docker
+  - open-source
+  - indonesia

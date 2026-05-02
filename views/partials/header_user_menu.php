@@ -5,11 +5,11 @@ $avatar = !empty($currentUser['avatar_url']) ? $currentUser['avatar_url'] : "htt
 
 <div class="user-wrapper">
     <div class="user-pill" onclick="toggleProfileMenu()">
-        <img src="<?php echo $avatar; ?>" alt="Profile">
+        <img src="<?php echo htmlspecialchars($avatar, ENT_QUOTES, 'UTF-8'); ?>" alt="Profile">
         <div class="user-text">
             <span class="user-name"><?php echo htmlspecialchars($firstName); ?></span>
         </div>
-        <span class="user-role-badge"><?php echo $currentUser['role']; ?></span>
+        <span class="user-role-badge"><?php echo htmlspecialchars($currentUser['role']); ?></span>
         <i class="ri-arrow-down-s-line"></i>
     </div>
 

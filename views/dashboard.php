@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>Dashboard - IT Helpdesk</title>
-    <link rel="stylesheet" href="assets/css/style.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="<?php echo htmlspecialchars(asset('assets/css/style.css'), ENT_QUOTES, 'UTF-8'); ?>">
     <!-- Icon Library -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
 </head>
@@ -120,7 +120,7 @@
                             style="cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 5px; border-radius: 8px; transition: background 0.2s;"
                             onmouseover="this.style.background='#f8fafc'"
                             onmouseout="this.style.background='transparent'">
-                            <img src="<?php echo $avatar; ?>" alt="Profile"
+                            <img src="<?php echo htmlspecialchars($avatar, ENT_QUOTES, 'UTF-8'); ?>" alt="Profile"
                                 style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex-shrink: 0;">
 
                             <div class="user-details" style="display: flex; flex-direction: column; line-height: 1.2;">
@@ -130,7 +130,7 @@
 
                             <span
                                 style="font-size: 0.75rem; background: #eff6ff; color: #1d4ed8; border: 1px solid #dbeafe; padding: 2px 8px; border-radius: 20px; text-transform: capitalize; font-weight: 600;">
-                                <?php echo $currentUser['role']; ?>
+                                <?php echo htmlspecialchars($currentUser['role']); ?>
                             </span>
 
                             <i class="ri-arrow-down-s-line" style="color: #64748b;"></i>

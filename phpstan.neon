@@ -1,0 +1,12 @@
+parameters:
+    level: 5
+    paths:
+        - src
+        - tests
+    excludePaths:
+        - vendor
+    tmpDir: .phpstan.cache
+    treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        # Database wrapper sengaja `die` saat koneksi gagal — bukan dead-end yang harus dideteksi.
+        - '#Variable .* might not be defined#'

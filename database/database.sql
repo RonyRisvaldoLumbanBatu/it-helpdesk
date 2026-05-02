@@ -29,3 +29,14 @@ CREATE TABLE IF NOT EXISTS tickets (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+-- Tabel Login Attempts (Brute-force protection untuk endpoint auth_check)
+CREATE TABLE IF NOT EXISTS login_attempts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    identifier VARCHAR(100) NOT NULL,
+    ip VARCHAR(45) NOT NULL,
+    successful TINYINT(1) NOT NULL DEFAULT 0,
+    attempted_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_identifier_ip_time (identifier, ip, attempted_at),
+    INDEX idx_attempted_at (attempted_at)
+);
