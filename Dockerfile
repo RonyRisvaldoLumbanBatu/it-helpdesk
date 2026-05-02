@@ -1,7 +1,7 @@
 # ==================================
 # Stage 1: Builder
 # ==================================
-FROM php:8.2-apache AS builder
+FROM php:8.5-apache AS builder
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -34,7 +34,7 @@ COPY . .
 # ==================================
 # Stage 2: Production
 # ==================================
-FROM php:8.2-apache
+FROM php:8.5-apache
 
 # Install only runtime dependencies
 RUN apt-get update && apt-get install -y \
